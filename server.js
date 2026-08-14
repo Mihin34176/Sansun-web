@@ -33,6 +33,7 @@ app.get('/api/models', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
 app.post('/api/chat', async (req, res) => {
     try {
         const { history } = req.body;
@@ -44,9 +45,9 @@ app.post('/api/chat', async (req, res) => {
         // Get the latest user message
         const lastUserMessage = history[history.length - 1]?.parts[0]?.text || '';
 
-        // Using latest supported alias
+        // Model එක stable version එකකට වෙනස් කරන්න:
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-flash-latest",
+            model: "gemini-1.5-flash",
             systemInstruction: SYSTEM_INSTRUCTION
         });
 
@@ -60,7 +61,6 @@ app.post('/api/chat', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
 // 2. Counseling Booking API Endpoint
 app.post('/api/counseling', (req, res) => {
     const bookingData = req.body;
