@@ -45,9 +45,9 @@ app.post('/api/chat', async (req, res) => {
         // Get the latest user message
         const lastUserMessage = history[history.length - 1]?.parts[0]?.text || '';
 
-        // Model එක stable version එකකට වෙනස් කරන්න:
+        // Most reliable model identifier across all SDK versions
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-1.5-flash-latest",
+            model: "gemini-1.5-flash",
             systemInstruction: SYSTEM_INSTRUCTION
         });
 
@@ -58,7 +58,7 @@ app.post('/api/chat', async (req, res) => {
 
     } catch (error) {
         console.error('Chat API Error:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error.message || 'Internal Server Error' });
     }
 });
 // 2. Counseling Booking API Endpoint
