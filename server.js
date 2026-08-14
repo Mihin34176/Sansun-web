@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 5000;
 // Middlewares
 app.use(cors());
 app.use(express.json());
+// Static files serve කිරීමට (HTML, CSS, JS)
+app.use(express.static(__dirname));
 
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
