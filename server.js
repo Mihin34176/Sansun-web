@@ -45,9 +45,9 @@ app.post('/api/chat', async (req, res) => {
         // Get the latest user message
         const lastUserMessage = history[history.length - 1]?.parts[0]?.text || '';
 
-        // Exact working model name from your API key's model list
+        // Working model name for active accounts
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-2.5-flash"
+            model: "gemini-3.1-flash-lite"
         });
 
         // Combine System Prompt with User Prompt
