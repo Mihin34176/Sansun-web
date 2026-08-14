@@ -17,7 +17,15 @@ app.use(express.static(__dirname));
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
+// server.js හි 15-20 පේළි ආසන්නයේ:
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'index.html'));
+});
 
+// ඕනෑම වෙනත් static route එකක් සඳහා (CSS, JS, images)
+app.get('/:file', (req, res) => {
+    res.sendFile(path.resolve(__dirname, req.params.file));
+});
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
