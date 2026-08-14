@@ -88,7 +88,5 @@ app.post('/api/counseling', (req, res) => {
     res.json({ success: true, message: 'Request recorded successfully!' });
 });
 
-// Server Start
-app.listen(PORT, () => {
-    console.log(`Sansun Backend is running on http://localhost:${PORT}`);
-});
+// Vercel Serverless Function සඳහා Export එක
+module.exports = app;
