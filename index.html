@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>සන්සුන් - Mental Health Platform</title>
+    
+    <!-- External UI Resources -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --primary: #4a7c59;
+            --primary-hover: #3b6346;
+            --primary-light: #f0f7f4;
+            --accent: #5b82a6;
+            --bg: #f7f9f8;
+            --card-bg: #ffffff;
+            --text-main: #2d3732;
+            --text-muted: #6b7c75;
+            --border: #e2e9e5;
+            --shadow: 0 10px 30px rgba(74, 124, 89, 0.08);
+            --radius: 20px;
+            --danger: #dc2626;
+            --whatsapp: #25d366;
+        }
+
+        [data-theme="dark"] {
+            --bg: #131b17;
+            --card-bg: #1c2621;
+            --text-main: #e8eee9;
+            --text-muted: #8fa097;
+            --border: #2c3a33;
+            --primary: #6b9e7a;
+            --primary-hover: #558362;
+            --primary-light: #182820;
+            --accent: #7a9ebc;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            --danger: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', 'Noto Sans Sinhala', system-ui, sans-serif; transition: background-color 0.3s, color 0.3s; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
+
+        .navbar {
+            position: sticky; top: 0; background: var(--card-bg);
+            border-bottom: 1px solid var(--border); padding: 15px 30px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+        }
+
+        .logo { font-size: 1.3rem; font-weight: 700; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-main); font-weight: 500; font-size: 0.95rem; }
+        .nav-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+        .btn-ctrl {
+            background: var(--primary-light); border: 1px solid var(--border);
+            color: var(--primary); padding: 8px 14px; border-radius: 30px;
+            cursor: pointer; font-weight: 600; font-size: 0.85rem;
+            display: flex; align-items: center; gap: 6px; text-decoration: none;
+        }
+
+        .wrapper { max-width: 1050px; margin: 0 auto; padding: 0 20px; }
+
+        .audio-bar {
+            background: var(--card-bg); border-bottom: 1px solid var(--border);
+            padding: 10px 20px; display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 0.9rem; flex-wrap: wrap;
+        }
+
+        .hero {
+            padding: 50px 20px; background: linear-gradient(180deg, var(--primary-light) 0%, var(--bg) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; }
+        .hero-text h2 { font-size: 2.2rem; color: var(--text-main); margin-bottom: 15px; font-weight: 700; }
+        .hero-text p { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 25px; }
+
+        .btn-action {
+            background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px;
+            text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer;
+        }
+
+        .btn-whatsapp { background-color: var(--whatsapp); color: white; }
+        .hero-image img { width: 100%; max-width: 380px; border-radius: 24px; box-shadow: var(--shadow); display: block; margin: 0 auto; }
+
+        .section { padding: 50px 0; border-bottom: 1px solid var(--border); }
+        .section-title { text-align: center; font-size: 1.6rem; color: var(--primary); margin-bottom: 30px; font-weight: 700; }
+
+        .counseling-banner {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #ffffff; padding: 25px; border-radius: var(--radius);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 35px; box-shadow: var(--shadow);
+        }
+
+        .banner-content h3 { font-size: 1.25rem; margin-bottom: 5px; color: #ffffff; }
+        .banner-content p { font-size: 0.95rem; opacity: 0.9; color: #ffffff; }
+        .banner-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .btn-banner-primary { background-color: #ffffff; color: var(--primary); padding: 10px 18px; border-radius: 30px; font-weight: 700; border: none; cursor: pointer; }
+        .btn-banner-emergency { background-color: var(--danger); color: #ffffff; padding: 10px 18px; border-radius: 30px; font-weight: 700; text-decoration: none; }
+
+        .mood-grid { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        .mood-btn {
+            font-size: 2.2rem; background: var(--card-bg); border: 2px solid var(--border);
+            padding: 10px 20px; border-radius: 16px; cursor: pointer; transition: transform 0.2s;
+        }
+        .mood-btn:hover, .mood-btn.selected { transform: scale(1.15); border-color: var(--primary); background: var(--primary-light); }
+
+        .wizard-container {
+            max-width: 650px; margin: 0 auto; background: var(--card-bg);
+            padding: 35px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border);
+        }
+
+        .tab-container { display: flex; background: var(--primary-light); padding: 5px; border-radius: 14px; gap: 5px; margin-bottom: 25px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted); font-weight: 600; border-radius: 10px; cursor: pointer; }
+        .tab-btn.active { background: var(--card-bg); color: var(--primary); }
+
+        .progress-bar-bg { width: 100%; height: 6px; background: var(--primary-light); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        .progress-bar-fill { height: 100%; width: 0%; background: var(--primary); transition: width 0.3s; }
+
+        .options-group { display: grid; gap: 10px; margin: 20px 0; }
+        .option-btn { background: var(--bg); border: 1.5px solid var(--border); padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 500; display: block; }
+        input[type="radio"] { display: none; }
+        input[type="radio"]:checked + .option-btn { background: var(--primary-light); color: var(--primary); border-color: var(--primary); font-weight: 600; }
+
+        .nav-actions { display: flex; gap: 10px; }
+        .btn-nav { flex: 1; padding: 12px; border-radius: 10px; font-weight: 600; border: none; cursor: pointer; }
+        .btn-prev { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
+        .btn-next { background: var(--primary); color: white; }
+
+        .checklist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .check-item { background: var(--card-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+
+        .helpline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 25px; }
+        .helpline-card { background: var(--card-bg); padding: 22px; border-radius: 14px; border: 1px solid var(--border); text-align: center; }
+        .helpline-card i { font-size: 1.3rem; color: var(--primary); margin-bottom: 8px; }
+        .helpline-card strong { color: var(--primary); font-size: 1.3rem; display: block; }
+        .helpline-card span { font-size: 0.85rem; color: var(--text-muted); }
+
+        .directory-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+        .directory-table th, .directory-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .directory-table th { background: var(--primary-light); color: var(--primary); font-weight: 700; }
+
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: var(--card-bg); padding: 35px; border-radius: var(--radius); text-align: left; max-width: 520px; width: 90%; position: relative; box-shadow: var(--shadow); max-height: 90vh; overflow-y: auto; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; border: none; background: none; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
+            background: var(--bg); color: var(--text-main); font-size: 0.9rem;
+        }
+
+        .breath-circle {
+            width: 140px; height: 140px; background: var(--primary-light); border: 4px solid var(--primary);
+            border-radius: 50%; margin: 30px auto; display: flex; justify-content: center; align-items: center;
+            font-weight: bold; color: var(--primary); font-size: 1.1rem; transition: transform 4s ease-in-out;
+        }
+        .breath-circle.expand { transform: scale(1.3); transition: transform 4s ease-in-out; }
+        .breath-circle.hold { transform: scale(1.3); }
+        .breath-circle.shrink { transform: scale(0.9); transition: transform 8s ease-in-out; }
+
+        .grounding-list { list-style: none; margin: 15px 0; }
+        .grounding-list li { background: var(--bg); padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--primary); font-size: 0.9rem; }
+
+        /* CHATBOT STYLES */
+        .chatbot-toggle {
+            position: fixed; bottom: 25px; right: 25px;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: var(--primary); color: white; border: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2); cursor: pointer;
+            z-index: 1500; font-size: 1.5rem; display: flex;
+            align-items: center; justify-content: center;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .chatbot-toggle:hover { transform: scale(1.1); background: var(--primary-hover); }
+
+        .chatbot-window {
+            position: fixed; bottom: 95px; right: 25px;
+            width: 380px; height: 530px; max-width: calc(100vw - 40px);
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: var(--radius); box-shadow: var(--shadow);
+            z-index: 1500; display: none; flex-direction: column;
+            overflow: hidden; animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-header {
+            background: var(--primary); color: white;
+            padding: 15px; display: flex; justify-content: space-between;
+            align-items: center; font-weight: 600;
+        }
+        .chat-header div { display: flex; align-items: center; gap: 8px; }
+        .chat-header button { background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer; }
+
+        .chat-body {
+            flex: 1; padding: 15px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 10px;
+            background: var(--bg); font-size: 0.9rem;
+            font-family: 'Noto Sans Sinhala', 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+            word-break: break-word;
+        }
+
+        .chat-msg {
+            max-width: 82%; 
+            padding: 10px 14px; 
+            border-radius: 16px;
+            line-height: 1.6; 
+            word-wrap: break-word; 
+            font-size: 0.9rem;
+            font-family: 'Noto Sans Sinhala', 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: 0.3px;
+            white-space: pre-wrap;
+        }
+        .chat-msg.bot {
+            background: var(--card-bg); color: var(--text-main);
+            align-self: flex-start; border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+        .chat-msg.user {
+            background: var(--primary); color: white;
+            align-self: flex-end; border-bottom-right-radius: 4px;
+        }
+
+        .quick-chips {
+            display: flex; gap: 6px; padding: 8px 12px;
+            overflow-x: auto; background: var(--card-bg);
+            border-top: 1px solid var(--border);
+        }
+        .quick-chips button {
+            background: var(--bg); border: 1.5px solid var(--border);
+            color: var(--text-main); border-radius: 20px; padding: 5px 10px;
+            font-size: 0.78rem; white-space: nowrap; cursor: pointer; transition: 0.2s;
+            font-family: 'Noto Sans Sinhala', 'Plus Jakarta Sans', sans-serif;
+        }
+        .quick-chips button:hover {
+            background: var(--primary-light); color: var(--primary); border-color: var(--primary);
+        }
+
+        .chat-input-area {
+            display: flex; padding: 10px; background: var(--card-bg);
+            border-top: 1px solid var(--border); gap: 6px; align-items: center;
+        }
+        .chat-input-area input {
+            flex: 1; padding: 10px 14px; border-radius: 20px;
+            border: 1px solid var(--border); background: var(--bg);
+            color: var(--text-main); font-size: 0.88rem; outline: none;
+            font-family: 'Noto Sans Sinhala', 'Plus Jakarta Sans', sans-serif;
+        }
+        .chat-input-area button {
+            background: var(--primary); color: white; border: none;
+            width: 38px; height: 38px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        #micBtn { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
+        #micBtn.recording { background: var(--danger); color: white; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        @media (max-width: 768px) { 
+            .hero-grid { grid-template-columns: 1fr; text-align: center; } 
+            .nav-links { display: none; }
+            .chatbot-window { right: 15px; bottom: 85px; width: calc(100vw - 30px); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVIGATION BAR -->
+<nav class="navbar">
+    <a href="#" class="logo"><i class="fa-solid fa-leaf"></i> <span id="brandName">සන්සුන්</span></a>
+    <ul class="nav-links">
+        <li><a href="#assessment" id="navAssessment">ඇගයීම</a></li>
+        <li><a href="#mood" id="navMood">Mood Journal</a></li>
+        <li><a href="#counseling" id="navCounseling">උපදේශනය</a></li>
+        <li><a href="#history" id="navHistory">ප්‍රගතිය</a></li>
+        <li><a href="#directory" id="navDirectory">සායන</a></li>
+    </ul>
+    <div class="nav-controls">
+        <button class="btn-ctrl" onclick="openGroundingModal()"><i class="fa-solid fa-hands-holding"></i> Grounding</button>
+        <button class="btn-ctrl" onclick="openBreathingModal()"><i class="fa-solid fa-wind"></i> <span id="navBreath">හුස්ම</span></button>
+        <button class="btn-ctrl" onclick="toggleLanguage()"><i class="fa-solid fa-globe"></i> <span id="langTxt">English</span></button>
+        <button class="btn-ctrl" onclick="toggleTheme()" aria-label="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+    </div>
+</nav>
+
+<!-- AMBIENT AUDIO BAR -->
+<div class="audio-bar">
+    <span id="audioLabel"><i class="fa-solid fa-music"></i> සොබාදහමේ ශබ්ද (Ambient Sound):</span>
+    <button class="btn-ctrl" onclick="toggleAudio()"><i class="fa-solid fa-play" id="audioIcon"></i> Play/Pause</button>
+    <a href="https://wa.me/94771234567?text=Hello%20Sansun%20Support" target="_blank" rel="noopener noreferrer" class="btn-ctrl btn-whatsapp">
+        <i class="fa-brands fa-whatsapp"></i> <span id="btnWa">WhatsApp Support</span>
+    </a>
+    <audio id="ambientAudio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=rain-and-puddle-113337.mp3"></audio>
+</div>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="wrapper">
+        <div class="hero-grid">
+            <div class="hero-text">
+                <h2 id="heroTitle">ඔබේ මානසික සුවතාවය වෙනුවෙන් සුරක්ෂිත ඉඩක්</h2>
+                <p id="heroDesc">දෛනික ජීවිතයේ පීඩනය හඳුනාගෙන මනස සන්සුන් කරගැනීමට අවශ්‍ය පහසුකම් මෙහි ඇතුළත් වේ.</p>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <a href="#assessment" class="btn-action"><i class="fa-solid fa-heart-pulse"></i> <span id="heroBtn">පරීක්ෂාව ආරම්භ කරන්න</span></a>
+                    <button class="btn-action btn-whatsapp" onclick="window.open('https://wa.me/94771234567?text=Hello%20Sansun%20Support','_blank')"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Relaxation">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MOOD JOURNAL SECTION -->
+<section class="section" id="mood">
+    <div class="wrapper">
+        <h2 class="section-title" id="moodTitle">දෛනික මනෝභාවය සටහන් කරන්න (Daily Mood Journal)</h2>
+        <div class="wizard-container" style="text-align: center;">
+            <p style="margin-bottom:15px; color:var(--text-muted);" id="moodDesc">අද දිනයේ ඔබට දැනෙන හැඟීම තෝරන්න:</p>
+            <div class="mood-grid">
+                <button class="mood-btn" onclick="selectMood('😊', this)" aria-label="Happy">😊</button>
+                <button class="mood-btn" onclick="selectMood('😐', this)" aria-label="Neutral">😐</button>
+                <button class="mood-btn" onclick="selectMood('😔', this)" aria-label="Sad">😔</button>
+                <button class="mood-btn" onclick="selectMood('😡', this)" aria-label="Angry">😡</button>
+            </div>
+            <div class="form-group">
+                <textarea id="moodNote" rows="2" placeholder="අද දිනය ගැන කුඩා සටහනක් තබන්න (Optional)..."></textarea>
+            </div>
+            <button class="btn-action" onclick="saveMoodEntry()" id="btnSaveMood">මනෝභාවය Save කරන්න</button>
+            <div id="moodLogList" style="margin-top:20px; text-align:left; font-size:0.85rem; color:var(--text-muted);"></div>
+        </div>
+    </div>
+</section>
+
+<!-- COUNSELING BANNER -->
+<section class="section" id="counseling">
+    <div class="wrapper">
+        <div class="counseling-banner">
+            <div class="banner-content">
+                <h3 id="bannerTitle">ඔබට කවුරුන් හෝ සමඟ කතා කිරීමට අවශ්‍යද?</h3>
+                <p id="bannerDesc">වෘත්තීය උපදේශකයෙකු හා සම්බන්ධ වීමට හෝ ක්ෂණික සහාය ලබා ගැනීමට ඉදිරියට යන්න.</p>
+            </div>
+            <div class="banner-actions">
+                <button class="btn-banner-primary" onclick="openCounselingModal()" id="btnBookCounselor">උපදේශන වාරයක් වෙන්කරගන්න</button>
+                <a href="tel:1926" class="btn-banner-emergency" id="btnCall1926">1926 අමතන්න</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ASSESSMENT SECTION (PHQ-9 / GAD-7) -->
+<section class="section" id="assessment">
+    <div class="wrapper">
+        <div class="wizard-container">
+            <div class="tab-container">
+                <button class="tab-btn active" id="tabPhq" onclick="switchTest('phq9')">PHQ-9 (විෂාදය)</button>
+                <button class="tab-btn" id="tabGad" onclick="switchTest('gad7')">GAD-7 (කාංසාව)</button>
+            </div>
+
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+
+            <form id="wizardForm" onsubmit="event.preventDefault();">
+                <div id="questionsContainer"></div>
+                <div class="nav-actions">
+                    <button type="button" class="btn-nav btn-prev" id="prevBtn" onclick="navigateStep(-1)">ආපසු</button>
+                    <button type="button" class="btn-nav btn-next" id="nextBtn" onclick="navigateStep(1)">ඉදිරියට</button>
+                </div>
+            </form>
+
+            <div id="result" style="display:none; text-align: center;"></div>
+        </div>
+    </div>
+</section>
+
+<!-- PROGRESS CHART SECTION -->
+<section class="section" id="history">
+    <div class="wrapper">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 class="section-title" id="chartTitle" style="margin-bottom:0;">ඔබේ ප්‍රගතිය (Past Scores)</h2>
+            <button class="btn-ctrl" onclick="togglePinProtection()" id="btnPinToggle"><i class="fa-solid fa-lock"></i> PIN Lock</button>
+        </div>
+        <div id="protectedHistoryContent" style="max-width:650px; margin:0 auto; background:var(--card-bg); padding:20px; border-radius:var(--radius); border:1px solid var(--border);">
+            <canvas id="historyChart"></canvas>
+        </div>
+    </div>
+</section>
+
+<!-- RESOURCE DIRECTORY SECTION -->
+<section class="section" id="directory">
+    <div class="wrapper">
+        <h2 class="section-title" id="dirTitle">දිස්ත්‍රික්ක අනුව මානසික සෞඛ්‍ය සායන (Resource Directory)</h2>
+        <div style="overflow-x:auto;">
+            <table class="directory-table">
+                <thead>
+                    <tr>
+                        <th id="thDistrict">දිස්ත්‍රික්කය</th>
+                        <th id="thHospital">රෝහල / මධ්‍යස්ථානය</th>
+                        <th id="thContact">දුරකථන අංකය</th>
+                    </tr>
+                </thead>
+                <tbody id="directoryBody"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- DAILY CHECKLIST SECTION -->
+<section class="section">
+    <div class="wrapper">
+        <h2 class="section-title" id="checkTitle">දෛනික මනෝවිද්‍යාත්මක පුරුදු (Daily Self-Care)</h2>
+        <div class="checklist-grid">
+            <div class="check-item"><input type="checkbox"> <span id="chk1">විනාඩි 10ක් හුස්ම ගැනීමේ ව්‍යායාම කිරීම</span></div>
+            <div class="check-item"><input type="checkbox"> <span id="chk2">වතුර ලීටර 2ක් ලබාගැනීම</span></div>
+            <div class="check-item"><input type="checkbox"> <span id="chk3">විනාඩි 15ක් එළිමහනේ ඇවිදීම</span></div>
+            <div class="check-item"><input type="checkbox"> <span id="chk4">පැය 7-8ක සුවබර නින්දක් ලැබීම</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- HELPLINES SECTION -->
+<section class="section" id="helplines" style="background: var(--primary-light);">
+    <div class="wrapper">
+        <h2 class="section-title" id="helpTitle">ඔබට හදිසි සහායක් අවශ්‍යද?</h2>
+        <p style="text-align:center; color: var(--text-muted);" id="helpDesc">ඔබ දැඩි මානසික පීඩනයකින් පසුවන්නේ නම්, නොමිලේ සහ උපරිම රහස්‍යභාවයෙන් යුතුව සහාය ලබාගැනීමට පහත සේවාවන් අමතන්න.</p>
+        
+        <div class="helpline-grid">
+            <div class="helpline-card">
+                <i class="fa-solid fa-phone-flip"></i>
+                <strong>1926</strong>
+                <span id="help1">ජාතික මානසික සෞඛ්‍ය විද්‍යායතනය</span>
+            </div>
+            <div class="helpline-card">
+                <i class="fa-solid fa-headset"></i>
+                <strong>1333</strong>
+                <span id="help2">CCC Line (24/7 නොමිලේ)</span>
+            </div>
+            <div class="helpline-card">
+                <i class="fa-solid fa-hands-holding-child"></i>
+                <strong>011 2696666</strong>
+                <span id="help3">ශ්‍රී ලංකා සුමිත්‍රයෝ</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CHATBOT WIDGET -->
+<button class="chatbot-toggle" onclick="toggleChatbot()" id="chatToggleBtn" aria-label="Open Chatbot">
+    <i class="fa-solid fa-comments"></i>
+</button>
+
+<div class="chatbot-window" id="chatbotWindow">
+    <div class="chat-header">
+        <div><i class="fa-solid fa-robot"></i> <span id="chatTitle">සන්සුන් AI සහායක</span></div>
+        <div>
+            <button id="ttsToggleBtn" onclick="toggleTTS()" aria-label="Read Aloud"><i class="fa-solid fa-volume-xmark" id="ttsIcon"></i></button>
+            <button onclick="toggleChatbot()" aria-label="Close Chatbot">&times;</button>
+        </div>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <div class="chat-msg bot" id="botIntroMsg">
+            ආයුබෝවන්! 👋 මම 'සන්සුන්' AI සහායක. ඔබට අද දැනෙන දේ හෝ සිතට වදදෙන ඕනෑම දෙයක් මා සමඟ බෙදාගන්න පුළුවන්. මා ඔබට උදවු කරන්නේ කෙසේද?
+        </div>
+    </div>
+    
+    <div class="quick-chips">
+        <button onclick="sendQuickMsg('මට මානසික පීඩනයක් දැනෙනවා')">🧘‍♂️ පීඩනයක් දැනෙනවා</button>
+        <button onclick="sendQuickMsg('හුස්ම ගැනීමේ ව්‍යායාමය')">🌬️ හුස්ම ගැනීමේ ක්‍රමය</button>
+        <button onclick="sendQuickMsg('1926 Helpline')">📞 Helpline</button>
+    </div>
+
+    <div class="chat-input-area">
+        <button id="micBtn" onclick="startVoiceInput()" aria-label="Voice Input"><i class="fa-solid fa-microphone"></i></button>
+        <input type="text" id="chatInput" placeholder="ඔබේ පණිවිඩය ටයිප් කරන්න..." onkeypress="handleChatKeyPress(event)">
+        <button onclick="sendChatMessage()" aria-label="Send Message"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<!-- COUNSELING MODAL -->
+<div class="modal" id="counselingModal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeCounselingModal()">&times;</button>
+        <h3 id="modalCounselHeader" style="color:var(--primary); margin-bottom:15px;">උපදේශන සේවාව හා සම්බන්ධ වන්න</h3>
+        <form id="counselingForm" onsubmit="handleCounselingSubmit(event)">
+            <div class="form-group">
+                <label id="lblPrivacy" for="requestType">රහස්‍යතාවය (Privacy Option)</label>
+                <select id="requestType" required onchange="toggleNameFields()">
+                    <option value="named" id="optNamed">සාමාන්‍ය (නම සහ ශිෂ්‍ය අංකය ඇතුළත් කරන්න)</option>
+                    <option value="anonymous" id="optAnon">අඥාත අයුරින් (Anonymous Request)</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="studentDetailsGroup">
+                <label id="lblName" for="studentName">සම්පූර්ණ නම / ශිෂ්‍ය අංකය</label>
+                <input type="text" id="studentName" placeholder="e.g., DIT 14253">
+            </div>
+
+            <div class="form-group">
+                <label id="lblMode" for="preferredMode">උපදේශන ක්‍රමය</label>
+                <select id="preferredMode" required>
+                    <option value="online" id="optOnline">මාර්ගගත (Online Chat / Video Call)</option>
+                    <option value="in-person" id="optInPerson">සෘජුව (In-Person Office Session)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label id="lblDate" for="preferredDate">කැමති දිනය සහ වේලාව</label>
+                <input type="datetime-local" id="preferredDate" required>
+            </div>
+
+            <div class="form-group">
+                <label id="lblNotes" for="notes">කෙටි සටහනක් (Optional)</label>
+                <textarea id="notes" rows="3" placeholder="ඔබට පවසන්නට ඇති දේ මෙහි සටහන් කරන්න..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-action" style="width:100%; justify-content:center;" id="btnSubmitCounsel">ඉල්ලීම යොමු කරන්න</button>
+        </form>
+    </div>
+</div>
+
+<!-- BREATHING EXERCISE MODAL -->
+<div class="modal" id="breathModal">
+    <div class="modal-content" style="text-align: center;">
+        <h3>4-7-8 Breathing Technique</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:5px;" id="breathModalSub">මනස සන්සුන් කර ගැනීමට පහත උපදෙස් අනුගමනය කරන්න.</p>
+        <div class="breath-circle" id="breathCircle">ලෑස්ති වන්න...</div>
+        <p id="breathInstruction" style="font-weight:600; color:var(--primary);"></p>
+        <button class="btn-action" style="margin-top:20px;" onclick="closeBreathingModal()" id="closeBreathBtn">වසා දමන්න</button>
+    </div>
+</div>
+
+<!-- GROUNDING MODAL -->
+<div class="modal" id="groundingModal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeGroundingModal()">&times;</button>
+        <h3 style="color:var(--primary); margin-bottom:10px;" id="groundTitle">5-4-3-2-1 Grounding Technique</h3>
+        <p style="font-size:0.88rem; color:var(--text-muted);" id="groundSub">Panic Attack එකක් හෝ අධික බියක් දැනෙන විට මනස වර්තමානයට ගෙන ඒමට මෙය භාවිතා කරන්න:</p>
+        <ul class="grounding-list" id="groundList"></ul>
+        <button class="btn-action" style="width:100%; justify-content:center;" onclick="closeGroundingModal()" id="groundCloseBtn">තේරුණා / Close</button>
+    </div>
+</div>
+
+<footer style="text-align:center; padding:30px; font-size:0.85rem; color:var(--text-muted);" id="footerText">
+    <p>© 2026 Sansun Health. Medical Disclaimer: This screening tool is for educational purposes only and not a clinical diagnosis.</p>
+</footer>
+
+<script>
+    /* ======================================================================
+       1. GLOBAL CONFIGURATION & DATA DICTIONARIES
+       ====================================================================== */
+   /* ======================================================================
+   1. GLOBAL CONFIGURATION & DATA DICTIONARIES
+   ====================================================================== */
+const APP_CONFIG = {
+    // Vercel URL එක + /api/chat
+    apiEndpoint: 'https://sansun-web.vercel.app/api/chat', 
+    whatsappNumber: '94771234567'
+};
+
+    const TRANSLATIONS = {
+        si: {
+            brandName: "සන්සුන්", navBreath: "හුස්ම", navAssessment: "ඇගයීම", navMood: "Mood Journal", navCounseling: "උපදේශනය", navHistory: "ප්‍රගතිය", navDirectory: "සායන",
+            heroTitle: "ඔබේ මානසික සුවතාවය වෙනුවෙන් සුරක්ෂිත ඉඩක්", heroDesc: "දෛනික ජීවිතයේ පීඩනය හඳුනාගෙන මනස සන්සුන් කරගැනීමට අවශ්‍ය පහසුකම් මෙහි ඇතුළත් වේ.", heroBtn: "පරීක්ෂාව ආරම්භ කරන්න",
+            moodTitle: "දෛනික මනෝභාවය සටහන් කරන්න (Daily Mood Journal)", moodDesc: "අද දිනයේ ඔබට දැනෙන හැඟීම තෝරන්න:", btnSaveMood: "මනෝභාවය Save කරන්න", moodPlaceholder: "අද දිනය ගැන කුඩා සටහනක් තබන්න (Optional)...", recentEntries: "මෑත සටහන්:",
+            bannerTitle: "ඔබට කවුරුන් හෝ සමඟ කතා කිරීමට අවශ්‍යද?", bannerDesc: "වෘත්තීය උපදේශකයෙකු හා සම්බන්ධ වීමට හෝ ක්ෂණික සහාය ලබා ගැනීමට ඉදිරියට යන්න.",
+            btnBookCounselor: "උපදේශන වාරයක් වෙන්කරගන්න", btnCall1926: "1926 අමතන්න",
+            modalCounselHeader: "උපදේශන සේවාව හා සම්බන්ධ වන්න", lblPrivacy: "රහස්‍යතාවය (Privacy Option)", optNamed: "සාමාන්‍ය (නම සහ ශිෂ්‍ය අංකය ඇතුළත් කරන්න)", optAnon: "අඥාත අයුරින් (Anonymous Request)",
+            lblName: "සම්පූර්ණ නම / ශිෂ්‍ය අංකය", lblMode: "උපදේශන ක්‍රමය", optOnline: "මාර්ගගත (Online Chat / Video Call)", optInPerson: "සෘජුව (In-Person Office Session)",
+            lblDate: "කැමති දිනය සහ වේලාව", lblNotes: "කෙටි සටහනක් (Optional)", btnSubmitCounsel: "ඉල්ලීම යොමු කරන්න", notesPlaceholder: "ඔබට පවසන්නට ඇති දේ මෙහි සටහන් කරන්න...",
+            tabPhq: "PHQ-9 (විෂාදය)", tabGad: "GAD-7 (කාංසාව)", btnPrev: "ආපසු", btnNext: "ඉදිරියට", btnReTest: "නැවත පරීක්ෂා කරන්න", scoreTitle: "ලකුණු මට්ටම", emergencyWarn: "⚠️ ක්ෂණික සහාය ලබා ගැනීමට උපදෙස් දෙනු ලැබේ.", completeMsg: "පරීක්ෂාව සම්පූර්ණයි.",
+            chartTitle: "ඔබේ ප්‍රගතිය (Past Scores)", chartLabel: "ලකුණු සටහන", chartLocked: "🔒 PIN එක මගින් ආරක්ෂිතයි. බලන්න Unlock කරන්න.", pinLockBtn: "PIN Lock", pinUnlockBtn: "Unlocked",
+            dirTitle: "දිස්ත්‍රික්ක අනුව මානසික සෞඛ්‍ය සායන (Resource Directory)", thDistrict: "දිස්ත්‍රික්කය", thHospital: "රෝහල / මධ්‍යස්ථානය", thContact: "දුරකථන අංකය",
+            checkTitle: "දෛනික මනෝවිද්‍යාත්මක පුරුදු (Daily Self-Care)", chk1: "විනාඩි 10ක් හුස්ම ගැනීමේ ව්‍යායාම කිරීම", chk2: "වතුර ලීටර 2ක් ලබාගැනීම", chk3: "විනාඩි 15ක් එළිමහනේ ඇවිදීම", chk4: "පැය 7-8ක සුවබර නින්දක් ලැබීම",
+            helpTitle: "ඔබට හදිසි සහායක් අවශ්‍යද?", helpDesc: "ඔබ දැඩි මානසික පීඩනයකින් පසුවන්නේ නම්, නොමිලේ සහ උපරිම රහස්‍යභාවයෙන් යුතුව සහාය ලබාගැනීමට පහත සේවාවන් අමතන්න.",
+            help1: "ජාතික මානසික සෞඛ්‍ය විද්‍යායතනය", help2: "CCC Line (24/7 නොමිලේ)", help3: "ශ්‍රී ලංකා සුමිත්‍රයෝ",
+            breathModalSub: "මනස සන්සුන් කර ගැනීමට පහත උපදෙස් අනුගමනය කරන්න.", closeBreathBtn: "වසා දමන්න", audioLabel: "සොබාදහමේ ශබ්ද (Ambient Sound):", btnWa: "WhatsApp Support",
+            breathTextReady: "ලෑස්ති වන්න...", breathTextInhale: "හුස්ම ගන්න", breathInstInhale: "තත්පර 4ක් තදින් හුස්ම ගන්න...", breathTextHold: "රඳවා ගන්න", breathInstHold: "තත්පර 7ක් හුස්ම තදකර තබාගන්න...", breathTextExhale: "පිටකරන්න", breathInstExhale: "තත්පර 8ක් පුරා හෙමින් හුස්ම පිටකරන්න...",
+            groundTitle: "5-4-3-2-1 Grounding Technique", groundSub: "Panic Attack එකක් හෝ අධික බියක් දැනෙන විට මනස වර්තමානයට ගෙන ඒමට මෙය භාවිතා කරන්න:",
+            groundList: [
+                "👀 <strong>5 - ඔබ අවට පෙනෙන දේවල් 5ක්</strong> දෙස අවධානයෙන් බලන්න.",
+                "✋ <strong>4 - ඔබට ඇල්ලිය හැකි දේවල් 4ක්</strong> අතගා බලන්න.",
+                "👂 <strong>3 - ඔබට ඇසෙන ශබ්ද 3කට</strong> සවන් දෙන්න.",
+                "👃 <strong>2 - ඔබට දැනෙන සුවඳ වර්ග 2ක්</strong> කෙරෙහි අවධානය යොමු කරන්න.",
+                "👅 <strong>1 - ඔබට දැනෙන රහක් 1ක්</strong> ගැන සිතන්න."
+            ],
+            groundClose: "තේරුණා / Close",
+            footer: "© 2026 Sansun Health. වෛද්‍ය වියාචනය: මෙම මෙවලම අධ්‍යාපනික අරමුණු සඳහා පමණක් වන අතර සායනික රෝග විනිශ්චයක් නොවේ.",
+            chatTitle: "සන්සුන් AI සහායක", chatPlaceholder: "ඔබේ පණිවිඩය ටයිප් කරන්න...",
+            botIntro: "ආයුබෝවන්! 👋 මම 'සන්සුන්' AI සහායක. ඔබට අද දැනෙන දේ හෝ සිතට වදදෙන ඕනෑම දෙයක් මා සමඟ බෙදාගන්න පුළුවන්. මා ඔබට උදවු කරන්නේ කෙසේද?",
+            directoryData: [
+                { district: "කොළඹ", hospital: "ජාතික මානසික සෞඛ්‍ය විද්‍යායතනය (NIMH), අංගොඩ", phone: "011 2578234" },
+                { district: "මහනුවර", hospital: "ශික්ෂණ රෝහල, පේරාදෙණිය (Mental Health Unit)", phone: "081 2388000" },
+                { district: "ගාල්ල", hospital: "කරාපිටිය ශික්ෂණ රෝහල", phone: "091 2232250" },
+                { district: "යාපනය", hospital: "ශික්ෂණ රෝහල, යාපනය", phone: "021 2222261" },
+                { district: "කුරුණෑගල", hospital: "ශික්ෂණ රෝහල, කුරුණෑගල", phone: "037 2222261" }
+            ],
+            phq9: ["1. වැඩ කටයුතු කෙරෙහි ඇති උනන්දුව අඩුවීම", "2. කනස්සල්ලෙන් හෝ බලාපොරොත්තු රහිතව පසුවීම", "3. නින්ද යෑමේ අපහසුව හෝ අධික ලෙස නිදාගැනීම", "4. අධික වෙහෙසකාරී බව දැනීම", "5. කෑම අරුචිය හෝ අධික ලෙස ආහාර ගැනීම", "6. තමා ගැන අප්‍රසාදයක් දැනීම", "7. අවධානය යොමු කිරීමේ අපහසුව", "8. අධික නොසන්සුන්කම හෝ මන්දගාමී බව", "9. තමාටම හානි කරගැනීමට සිතීම"],
+            gad7: ["1. නොසන්සුන්බව හෝ බියකරු බව", "2. කාංසාව පාලනය කරගැනීමට නොහැකි වීම", "3. විවිධ දේවල් ගැන අධික ලෙස වද වීම", "4. සැහැල්ලුවෙන් සිටීමට අපහසු වීම", "5. එක තැන සිටීමට නොහැකි තරම් නොසන්සුන් වීම", "6. ඉක්මනින් කෝප වීම", "7. නරක යමක් සිදුවනු ඇතැයි යන බිය"],
+            options: ["කොහෙත්ම නැත", "දින කිහිපයක්", "සතියකට වැඩි දින ගණනක්", "දිනපතාම වාගේ"]
+        },
+        en: {
+            brandName: "Sansun", navBreath: "Breathing", navAssessment: "Assessment", navMood: "Mood Journal", navCounseling: "Counseling", navHistory: "History", navDirectory: "Directory",
+            heroTitle: "A Safe Space for Your Mental Well-being", heroDesc: "Identify stress and find tools to calm your mind effectively in daily life.", heroBtn: "Start Assessment",
+            moodTitle: "Daily Mood Journal", moodDesc: "Select how you are feeling today:", btnSaveMood: "Save Mood Entry", moodPlaceholder: "Write a short note about today (Optional)...", recentEntries: "Recent Entries:",
+            bannerTitle: "Need someone to talk to?", bannerDesc: "Connect with a qualified counselor or reach out to immediate support services confidentially.",
+            btnBookCounselor: "Book Counseling Session", btnCall1926: "Call 1926",
+            modalCounselHeader: "Connect with a Counselor", lblPrivacy: "Privacy Option", optNamed: "Standard (Include Name & Student ID)", optAnon: "Anonymous Request",
+            lblName: "Full Name / Student ID", lblMode: "Preferred Session Mode", optOnline: "Online Chat / Video Call", optInPerson: "In-Person (Counseling Office)",
+            lblDate: "Preferred Date & Time", lblNotes: "Brief Note (Optional)", btnSubmitCounsel: "Submit Request", notesPlaceholder: "Share anything you'd like us to know...",
+            tabPhq: "PHQ-9 (Depression)", tabGad: "GAD-7 (Anxiety)", btnPrev: "Back", btnNext: "Next", btnReTest: "Retake Assessment", scoreTitle: "Score Result", emergencyWarn: "⚠️ Immediate support recommended.", completeMsg: "Assessment complete.",
+            chartTitle: "Your Progress (Past Scores)", chartLabel: "Score History", chartLocked: "🔒 Protected by PIN. Please unlock to view.", pinLockBtn: "PIN Lock", pinUnlockBtn: "Unlocked",
+            dirTitle: "District Mental Health Resource Directory", thDistrict: "District", thHospital: "Hospital / Unit", thContact: "Contact Number",
+            checkTitle: "Daily Self-Care Checklist", chk1: "10 minutes breathing exercise", chk2: "Drink 2 liters of water", chk3: "15 minutes outdoor walk", chk4: "7-8 hours sound sleep",
+            helpTitle: "Need Immediate Support?", helpDesc: "If you are experiencing severe distress, reach out to these free helplines anytime with full privacy.",
+            help1: "National Institute of Mental Health", help2: "CCC Line (24/7 Free)", help3: "Sri Lanka Sumithrayo",
+            breathModalSub: "Follow the instructions below to relax your mind.", closeBreathBtn: "Close", audioLabel: "Nature Ambient Sound:", btnWa: "WhatsApp Support",
+            breathTextReady: "Get Ready...", breathTextInhale: "Inhale", breathInstInhale: "Inhale deeply for 4 seconds...", breathTextHold: "Hold", breathInstHold: "Hold your breath for 7 seconds...", breathTextExhale: "Exhale", breathInstExhale: "Exhale slowly for 8 seconds...",
+            groundTitle: "5-4-3-2-1 Grounding Technique", groundSub: "Use this to bring your mind back to the present moment during high anxiety or panic:",
+            groundList: [
+                "👀 <strong>5 - Look at 5 things</strong> around you carefully.",
+                "✋ <strong>4 - Touch 4 things</strong> you can feel.",
+                "👂 <strong>3 - Listen to 3 distinct sounds</strong> around you.",
+                "👃 <strong>2 - Notice 2 scents or smells</strong> around you.",
+                "👅 <strong>1 - Focus on 1 taste</strong> in your mouth."
+            ],
+            groundClose: "Got it / Close",
+            footer: "© 2026 Sansun Health. Medical Disclaimer: This screening tool is for educational purposes only and not a clinical diagnosis.",
+            chatTitle: "Sansun AI Assistant", chatPlaceholder: "Type your message...",
+            botIntro: "Hello! 👋 I am the 'Sansun' AI Assistant. Feel free to share how you're feeling or whatever is on your mind. How can I help you today?",
+            directoryData: [
+                { district: "Colombo", hospital: "National Institute of Mental Health (NIMH), Angoda", phone: "011 2578234" },
+                { district: "Kandy", hospital: "Teaching Hospital, Peradeniya (Mental Health Unit)", phone: "081 2388000" },
+                { district: "Galle", hospital: "Karapitiya Teaching Hospital", phone: "091 2232250" },
+                { district: "Jaffna", hospital: "Teaching Hospital, Jaffna", phone: "021 2222261" },
+                { district: "Kurunegala", hospital: "Teaching Hospital, Kurunegala", phone: "037 2222261" }
+            ],
+            phq9: ["1. Little interest or pleasure in doing things", "2. Feeling down, depressed, or hopeless", "3. Trouble falling/staying asleep, or sleeping too much", "4. Feeling tired or having little energy", "5. Poor appetite or overeating", "6. Feeling bad about yourself", "7. Trouble concentrating on things", "8. Moving or speaking slowly, or being restless", "9. Thoughts of self-harm"],
+            gad7: ["1. Feeling nervous, anxious, or on edge", "2. Not being able to stop worrying", "3. Worrying too much about different things", "4. Trouble relaxing", "5. Being so restless that it's hard to sit still", "6. Becoming easily annoyed or irritable", "7. Feeling afraid as if something awful might happen"],
+            options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+        }
+    };
+
+    /* ======================================================================
+       2. STATE MANAGEMENT
+       ====================================================================== */
+    let currentLang = 'si';
+    let currentTest = 'phq9';
+    let currentStep = 0;
+    let answers = {};
+    let isTestCompleted = false;
+    let lastCalculatedScore = null;
+    let selectedMoodVal = '';
+    let userPin = localStorage.getItem('sansun_pin') || null;
+    let isUnlocked = false;
+    let chartInstance = null;
+    let breathTimeoutIds = [];
+    let currentBreathPhase = 'ready';
+    let isTTSEnabled = false;
+    let conversationHistory = [];
+
+    /* ======================================================================
+       3. UI & LANGUAGE CONTROLLERS
+       ====================================================================== */
+    function toggleTheme() {
+        const body = document.body;
+        body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? '' : 'dark');
+    }
+
+    function toggleLanguage() {
+        currentLang = (currentLang === 'si') ? 'en' : 'si';
+        document.getElementById('langTxt').innerText = (currentLang === 'si') ? 'English' : 'සිංහල';
+        const t = TRANSLATIONS[currentLang];
+
+        document.getElementById('brandName').innerText = t.brandName;
+        document.getElementById('navBreath').innerText = t.navBreath;
+        document.getElementById('navAssessment').innerText = t.navAssessment;
+        document.getElementById('navMood').innerText = t.navMood;
+        document.getElementById('navCounseling').innerText = t.navCounseling;
+        document.getElementById('navHistory').innerText = t.navHistory;
+        document.getElementById('navDirectory').innerText = t.navDirectory;
+
+        document.getElementById('heroTitle').innerText = t.heroTitle;
+        document.getElementById('heroDesc').innerText = t.heroDesc;
+        document.getElementById('heroBtn').innerText = t.heroBtn;
+
+        document.getElementById('moodTitle').innerText = t.moodTitle;
+        document.getElementById('moodDesc').innerText = t.moodDesc;
+        document.getElementById('btnSaveMood').innerText = t.btnSaveMood;
+        document.getElementById('moodNote').placeholder = t.moodPlaceholder;
+
+        document.getElementById('bannerTitle').innerText = t.bannerTitle;
+        document.getElementById('bannerDesc').innerText = t.bannerDesc;
+        document.getElementById('btnBookCounselor').innerText = t.btnBookCounselor;
+        document.getElementById('btnCall1926').innerText = t.btnCall1926;
+
+        document.getElementById('modalCounselHeader').innerText = t.modalCounselHeader;
+        document.getElementById('lblPrivacy').innerText = t.lblPrivacy;
+        document.getElementById('optNamed').innerText = t.optNamed;
+        document.getElementById('optAnon').innerText = t.optAnon;
+        document.getElementById('lblName').innerText = t.lblName;
+        document.getElementById('lblMode').innerText = t.lblMode;
+        document.getElementById('optOnline').innerText = t.optOnline;
+        document.getElementById('optInPerson').innerText = t.optInPerson;
+        document.getElementById('lblDate').innerText = t.lblDate;
+        document.getElementById('lblNotes').innerText = t.lblNotes;
+        document.getElementById('notes').placeholder = t.notesPlaceholder;
+        document.getElementById('btnSubmitCounsel').innerText = t.btnSubmitCounsel;
+
+        document.getElementById('tabPhq').innerText = t.tabPhq;
+        document.getElementById('tabGad').innerText = t.tabGad;
+        document.getElementById('prevBtn').innerText = t.btnPrev;
+        document.getElementById('nextBtn').innerText = t.btnNext;
+
+        document.getElementById('chartTitle').innerText = t.chartTitle;
+        document.getElementById('btnPinToggle').innerHTML = `<i class="fa-solid fa-${isUnlocked ? 'lock-open' : 'lock'}"></i> ${isUnlocked ? t.pinUnlockBtn : t.pinLockBtn}`;
+        document.getElementById('dirTitle').innerText = t.dirTitle;
+        document.getElementById('thDistrict').innerText = t.thDistrict;
+        document.getElementById('thHospital').innerText = t.thHospital;
+        document.getElementById('thContact').innerText = t.thContact;
+
+        document.getElementById('checkTitle').innerText = t.checkTitle;
+        document.getElementById('chk1').innerText = t.chk1;
+        document.getElementById('chk2').innerText = t.chk2;
+        document.getElementById('chk3').innerText = t.chk3;
+        document.getElementById('chk4').innerText = t.chk4;
+
+        document.getElementById('helpTitle').innerText = t.helpTitle;
+        document.getElementById('helpDesc').innerText = t.helpDesc;
+        document.getElementById('help1').innerText = t.help1;
+        document.getElementById('help2').innerText = t.help2;
+        document.getElementById('help3').innerText = t.help3;
+
+        document.getElementById('groundTitle').innerText = t.groundTitle;
+        document.getElementById('groundSub').innerText = t.groundSub;
+        document.getElementById('groundCloseBtn').innerText = t.groundClose;
+
+        document.getElementById('breathModalSub').innerText = t.breathModalSub;
+        document.getElementById('closeBreathBtn').innerText = t.closeBreathBtn;
+        document.getElementById('audioLabel').innerHTML = `<i class="fa-solid fa-music"></i> ${t.audioLabel}`;
+        document.getElementById('btnWa').innerText = t.btnWa;
+        document.getElementById('footerText').innerHTML = `<p>${t.footer}</p>`;
+
+        document.getElementById('chatTitle').innerText = t.chatTitle;
+        document.getElementById('chatInput').placeholder = t.chatPlaceholder;
+        document.getElementById('botIntroMsg').innerText = t.botIntro;
+
+        renderGroundingList();
+        renderDirectoryTable();
+        renderMoodLogs();
+        updateChart();
+
+        if (isTestCompleted) {
+            renderResultUI();
+        } else {
+            renderCurrentStep();
+        }
+
+        updateBreathingUI(currentBreathPhase);
+    }
+
+    function toggleAudio() {
+        const audio = document.getElementById('ambientAudio');
+        const icon = document.getElementById('audioIcon');
+        if (audio.paused) { 
+            audio.play(); 
+            icon.className = "fa-solid fa-pause"; 
+        } else { 
+            audio.pause(); 
+            icon.className = "fa-solid fa-play"; 
+        }
+    }
+
+    /* ======================================================================
+       4. FEATURE LOGIC
+       ====================================================================== */
+    function selectMood(emoji, el) {
+        selectedMoodVal = emoji;
+        document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('selected'));
+        if (el) el.classList.add('selected');
+    }
+
+    function saveMoodEntry() {
+        if (!selectedMoodVal) return alert(currentLang === 'si' ? "කරුණාකර Emoji එකක් තෝරන්න." : "Please select an emoji.");
+        const note = document.getElementById('moodNote').value;
+        let moodLogs = JSON.parse(localStorage.getItem('sansun_moods') || '[]');
+        moodLogs.unshift({ date: new Date().toLocaleDateString(), mood: selectedMoodVal, note: note });
+        localStorage.setItem('sansun_moods', JSON.stringify(moodLogs));
+        document.getElementById('moodNote').value = '';
+        alert(currentLang === 'si' ? "ඔබේ මනෝභාවය සටහන් විය!" : "Mood entry saved!");
+        renderMoodLogs();
+    }
+
+    function renderMoodLogs() {
+        let moodLogs = JSON.parse(localStorage.getItem('sansun_moods') || '[]');
+        let html = `<strong>${TRANSLATIONS[currentLang].recentEntries}</strong><br>`;
+        moodLogs.slice(0, 3).forEach(m => {
+            let safeNote = m.note ? m.note.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+            html += `<div style="border-bottom:1px solid var(--border); padding:5px 0;">${m.date} - ${m.mood} ${safeNote ? ': '+safeNote : ''}</div>`;
+        });
+        document.getElementById('moodLogList').innerHTML = moodLogs.length ? html : '';
+    }
+
+    function renderCurrentStep() {
+        const questions = TRANSLATIONS[currentLang][currentTest];
+        const container = document.getElementById('questionsContainer');
+        const pct = Math.round(((currentStep + 1) / questions.length) * 100);
+        document.getElementById('progressFill').style.width = `${pct}%`;
+
+        let opts = '';
+        TRANSLATIONS[currentLang].options.forEach((opt, idx) => {
+            const checked = answers[currentStep] === idx ? 'checked' : '';
+            opts += `
+                <input type="radio" id="opt_${idx}" name="q" value="${idx}" ${checked} onchange="answers[${currentStep}]=parseInt(this.value)">
+                <label class="option-btn" for="opt_${idx}">${opt}</label>
+            `;
+        });
+
+        container.innerHTML = `<p style="font-weight:600; margin-bottom:15px;">${questions[currentStep]}</p><div class="options-group">${opts}</div>`;
+        document.getElementById('prevBtn').disabled = currentStep === 0;
+    }
+
+    function navigateStep(dir) {
+        if (dir === 1 && answers[currentStep] === undefined) {
+            return alert(currentLang === 'si' ? "කරුණාකර පිළිතුරක් තෝරන්න." : "Please select an answer.");
+        }
+        currentStep += dir;
+        const qList = TRANSLATIONS[currentLang][currentTest];
+        if (currentStep < qList.length) renderCurrentStep();
+        else calculateScore(true);
+    }
+
+    function switchTest(type) {
+        currentTest = type; currentStep = 0; answers = {}; isTestCompleted = false;
+        document.getElementById('tabPhq').classList.toggle('active', type === 'phq9');
+        document.getElementById('tabGad').classList.toggle('active', type === 'gad7');
+        document.getElementById('result').style.display = 'none';
+        document.getElementById('wizardForm').style.display = 'block';
+        renderCurrentStep();
+    }
+
+    function calculateScore(saveHistory = true) {
+        let total = Object.values(answers).reduce((a, b) => a + parseInt(b), 0);
+        let isEmergency = (currentTest === 'phq9' && answers[8] > 0);
+        
+        lastCalculatedScore = { total, isEmergency };
+        isTestCompleted = true;
+
+        if (saveHistory) {
+            let history = JSON.parse(localStorage.getItem('sansun_history') || '[]');
+            history.push({ date: new Date().toLocaleDateString(), score: total, type: currentTest.toUpperCase() });
+            localStorage.setItem('sansun_history', JSON.stringify(history));
+        }
+
+        renderResultUI();
+        updateChart();
+    }
+
+    function renderResultUI() {
+        if (!lastCalculatedScore) return;
+        const { total, isEmergency } = lastCalculatedScore;
+        const t = TRANSLATIONS[currentLang];
+        document.getElementById('wizardForm').style.display = 'none';
+
+        let severity = total <= 4 ? "Minimal" : total <= 9 ? "Mild" : total <= 14 ? "Moderate" : "Severe";
+        const resDiv = document.getElementById('result');
+        resDiv.style.display = 'block';
+        resDiv.innerHTML = `
+            <h3>${t.scoreTitle}: ${total} (${severity})</h3>
+            <p style="margin: 10px 0;">${isEmergency ? t.emergencyWarn : t.completeMsg}</p>
+            <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:15px;">
+                <button onclick="openCounselingModal()" class="btn-action"><i class="fa-solid fa-user-doctor"></i> ${t.btnBookCounselor}</button>
+                <button onclick="switchTest('${currentTest}')" class="btn-action" style="background:var(--accent);">${t.btnReTest}</button>
+            </div>
+        `;
+    }
+
+    function updateChart() {
+        if (userPin && !isUnlocked) {
+            document.getElementById('protectedHistoryContent').innerHTML = `<p style="text-align:center; padding:20px;">${TRANSLATIONS[currentLang].chartLocked}</p>`;
+            return;
+        }
+
+        let history = JSON.parse(localStorage.getItem('sansun_history') || '[]');
+        let labels = history.slice(-5).map(h => `${h.date} (${h.type})`);
+        let data = history.slice(-5).map(h => h.score);
+
+        const container = document.getElementById('protectedHistoryContent');
+        container.innerHTML = '<canvas id="historyChart"></canvas>';
+        const ctx = document.getElementById('historyChart').getContext('2d');
+
+        if (chartInstance) chartInstance.destroy();
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: { labels: labels, datasets: [{ label: TRANSLATIONS[currentLang].chartLabel, data: data, borderColor: '#4a7c59', tension: 0.3, fill: true, backgroundColor: 'rgba(74, 124, 89, 0.1)' }] },
+            options: { responsive: true, maintainAspectRatio: true }
+        });
+    }
+
+    function togglePinProtection() {
+        if (!userPin) {
+            let setPin = prompt(currentLang === 'si' ? "නව 4-digit PIN අංකයක් ඇතුළත් කරන්න:" : "Set a new 4-digit PIN:");
+            if (setPin && setPin.length === 4) {
+                localStorage.setItem('sansun_pin', setPin);
+                userPin = setPin;
+                alert(currentLang === 'si' ? "PIN අංකය සාර්ථකව සැකසුවා!" : "PIN set successfully!");
+            }
+        } else {
+            let enterPin = prompt(currentLang === 'si' ? "ඔබේ PIN අංකය ඇතුළත් කරන්න:" : "Enter your PIN:");
+            if (enterPin === userPin) {
+                isUnlocked = true;
+                document.getElementById('btnPinToggle').innerHTML = `<i class="fa-solid fa-lock-open"></i> ${TRANSLATIONS[currentLang].pinUnlockBtn}`;
+                updateChart();
+                alert(currentLang === 'si' ? "ප්‍රගති සටහන අගුළු හරින ලදී." : "Unlocked successfully!");
+            } else {
+                alert(currentLang === 'si' ? "වැරදි PIN අංකයකි." : "Incorrect PIN.");
+            }
+        }
+    }
+
+    function openCounselingModal() { document.getElementById('counselingModal').style.display = 'flex'; }
+    function closeCounselingModal() { document.getElementById('counselingModal').style.display = 'none'; }
+    function openGroundingModal() { document.getElementById('groundingModal').style.display = 'flex'; }
+    function closeGroundingModal() { document.getElementById('groundingModal').style.display = 'none'; }
+
+    function toggleNameFields() {
+        const type = document.getElementById('requestType').value;
+        const studentDetailsGroup = document.getElementById('studentDetailsGroup');
+        const studentNameInput = document.getElementById('studentName');
+        
+        if (type === 'anonymous') {
+            studentDetailsGroup.style.display = 'none';
+            studentNameInput.removeAttribute('required');
+        } else {
+            studentDetailsGroup.style.display = 'block';
+            studentNameInput.setAttribute('required', 'true');
+        }
+    }
+
+    async function handleCounselingSubmit(e) {
+        e.preventDefault();
+        
+        const formData = {
+            type: document.getElementById('requestType').value,
+            name: document.getElementById('studentName').value,
+            mode: document.getElementById('preferredMode').value,
+            date: document.getElementById('preferredDate').value,
+            notes: document.getElementById('notes').value
+        };
+
+        try {
+           // handleCounselingSubmit function එක ඇතුළේ[cite: 1]:
+const response = await fetch('https://sansun-web.vercel.app/api/counseling', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+});
+           
+
+            if (response.ok) {
+                alert(currentLang === 'si' ? "උපදේශන ඉල්ලීම සාර්ථකව යොමු කරන ලදී!" : "Counseling request submitted successfully!");
+                closeCounselingModal();
+                document.getElementById('counselingForm').reset();
+            } else {
+                alert(currentLang === 'si' ? "යමක් වැරදී ඇත. නැවත උත්සාහ කරන්න." : "Something went wrong. Please try again.");
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert(currentLang === 'si' ? "Server එක සම්බන්ධ කරගත නොහැකි විය!" : "Could not connect to the server!");
+        }
+    }
+
+    function openBreathingModal() { 
+        document.getElementById('breathModal').style.display = 'flex'; 
+        runBreathingCycle(); 
+    }
+
+    function updateBreathingUI(phase) {
+        currentBreathPhase = phase;
+        let circle = document.getElementById('breathCircle');
+        let txt = document.getElementById('breathInstruction');
+        let t = TRANSLATIONS[currentLang];
+
+        if (phase === 'ready') {
+            circle.innerText = t.breathTextReady;
+            txt.innerText = '';
+        } else if (phase === 'inhale') {
+            circle.innerText = t.breathTextInhale;
+            txt.innerText = t.breathInstInhale;
+        } else if (phase === 'hold') {
+            circle.innerText = t.breathTextHold;
+            txt.innerText = t.breathInstHold;
+        } else if (phase === 'exhale') {
+            circle.innerText = t.breathTextExhale;
+            txt.innerText = t.breathInstExhale;
+        }
+    }
+
+    function clearBreathingTimers() {
+        breathTimeoutIds.forEach(id => clearTimeout(id));
+        breathTimeoutIds = [];
+    }
+
+    function runBreathingCycle() {
+        clearBreathingTimers();
+        let circle = document.getElementById('breathCircle');
+        circle.className = "breath-circle expand";
+        updateBreathingUI('inhale');
+
+        let t1 = setTimeout(() => {
+            circle.className = "breath-circle hold";
+            updateBreathingUI('hold');
+
+            let t2 = setTimeout(() => {
+                circle.className = "breath-circle shrink";
+                updateBreathingUI('exhale');
+
+                let t3 = setTimeout(() => { runBreathingCycle(); }, 8000);
+                breathTimeoutIds.push(t3);
+            }, 7000);
+            breathTimeoutIds.push(t2);
+        }, 4000);
+        breathTimeoutIds.push(t1);
+    }
+
+    function closeBreathingModal() { 
+        document.getElementById('breathModal').style.display = 'none'; 
+        clearBreathingTimers(); 
+        updateBreathingUI('ready');
+    }
+
+    function renderGroundingList() {
+        const items = TRANSLATIONS[currentLang].groundList;
+        let html = '';
+        items.forEach(item => { html += `<li>${item}</li>`; });
+        document.getElementById('groundList').innerHTML = html;
+    }
+
+    function renderDirectoryTable() {
+        const data = TRANSLATIONS[currentLang].directoryData;
+        let html = '';
+        data.forEach(row => {
+            html += `<tr><td>${row.district}</td><td>${row.hospital}</td><td>${row.phone}</td></tr>`;
+        });
+        document.getElementById('directoryBody').innerHTML = html;
+    }
+
+    /* ======================================================================
+       5. CHATBOT ENGINE
+       ====================================================================== */
+    function cleanMarkdown(text) {
+        return text
+            .replace(/\*\*(.*?)\*\*/g, '$1') // Bold
+            .replace(/\*(.*?)\*/g, '$1')     // Italic
+            .replace(/`([^`]+)`/g, '$1')     // Code
+            .replace(/#/g, '');               // Headings
+    }
+
+    function toggleChatbot() {
+        const win = document.getElementById('chatbotWindow');
+        win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function handleChatKeyPress(e) {
+        if (e.key === 'Enter') sendChatMessage();
+    }
+
+    function sendQuickMsg(text) {
+        document.getElementById('chatInput').value = text;
+        sendChatMessage();
+    }
+
+    function toggleTTS() {
+        isTTSEnabled = !isTTSEnabled;
+        const icon = document.getElementById('ttsIcon');
+        icon.className = isTTSEnabled ? "fa-solid fa-volume-high" : "fa-solid fa-volume-xmark";
+    }
+
+    function startVoiceInput() {
+        const micBtn = document.getElementById('micBtn');
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+            alert(currentLang === 'si' ? "ඔබගේ Browser එක Voice Input සහාය නොදක්වයි." : "Your browser does not support voice input.");
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = (currentLang === 'si') ? 'si-LK' : 'en-US';
+
+        recognition.onstart = () => micBtn.classList.add('recording');
+        recognition.onresult = (event) => {
+            const voiceText = event.results[0][0].transcript;
+            document.getElementById('chatInput').value = voiceText;
+            micBtn.classList.remove('recording');
+            sendChatMessage();
+        };
+        recognition.onerror = () => micBtn.classList.remove('recording');
+        recognition.onend = () => micBtn.classList.remove('recording');
+
+        recognition.start();
+    }
+
+    async function sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        const msgText = input.value.trim();
+        if (!msgText) return;
+
+        appendUserMsg(msgText);
+        input.value = '';
+
+        conversationHistory.push({ role: "user", parts: [{ text: msgText }] });
+
+        const loadingId = 'loading-' + Date.now();
+        appendLoadingMsg(loadingId);
+
+        try {
+            const response = await fetch(APP_CONFIG.apiEndpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ history: conversationHistory })
+            });
+
+            const data = await response.json();
+            removeLoadingMsg(loadingId);
+
+            if (data && data.reply) {
+                const cleanReply = cleanMarkdown(data.reply);
+                conversationHistory.push({ role: "model", parts: [{ text: cleanReply }] });
+                streamBotMessage(cleanReply);
+
+                if (isTTSEnabled) speakText(cleanReply);
+            } else {
+                fallbackBotResponse(msgText);
+            }
+        } catch (error) {
+            removeLoadingMsg(loadingId);
+            fallbackBotResponse(msgText);
+        }
+    }
+
+    function appendUserMsg(text) {
+        const chatBody = document.getElementById('chatBody');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'chat-msg user';
+        msgDiv.innerText = text;
+        chatBody.appendChild(msgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function appendLoadingMsg(id) {
+        const chatBody = document.getElementById('chatBody');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'chat-msg bot';
+        msgDiv.id = id;
+        msgDiv.innerText = (currentLang === 'si') ? 'සිතමින් පවතියි...' : 'Thinking...';
+        chatBody.appendChild(msgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function removeLoadingMsg(id) {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    }
+
+    function streamBotMessage(text) {
+        const chatBody = document.getElementById('chatBody');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'chat-msg bot';
+        chatBody.appendChild(msgDiv);
+
+        let index = 0;
+        const interval = setInterval(() => {
+            if (index < text.length) {
+                msgDiv.innerText += text.charAt(index);
+                index++;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            } else {
+                clearInterval(interval);
+            }
+        }, 15);
+    }
+
+    function speakText(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = (currentLang === 'si') ? 'si-LK' : 'en-US';
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function fallbackBotResponse(input) {
+        const reply = generateBotResponse(input);
+        streamBotMessage(reply);
+        if (isTTSEnabled) speakText(reply);
+    }
+
+    function generateBotResponse(input) {
+        const txt = input.toLowerCase();
+        const isSi = (currentLang === 'si');
+
+        if (txt.includes('help') || txt.includes('suicide') || txt.includes('die') || txt.includes('මරණ') || txt.includes('මැරෙන්න') || txt.includes('1926')) {
+            return isSi ? 
+                "⚠️ ඔබ අධික මානසික පීඩනයකින් පසුවන්නේ නම්, කරුණාකර වහාම 1926 (ජාතික මානසික සෞඛ්‍ය හෙල්ප්ලයින්) හෝ 1333 අමතන්න. ඔබ තනිවී නැත, සහාය ලබාගැනීමට පිරිසක් සූදානමින් සිටිති." :
+                "⚠️ If you are in deep distress, please immediately call 1926 (Mental Health Helpline) or 1333. Help is available 24/7.";
+        }
+
+        if (txt.includes('stress') || txt.includes('anxiety') || txt.includes('පීඩන') || txt.includes('බය') || txt.includes('කාංසාව') || txt.includes('හුස්ම')) {
+            return isSi ? 
+                "මනස සන්සුන් කරගැනීමට අපගේ 'හුස්ම' (Breathing) ව්‍යායාමය හෝ 'Grounding' ක්‍රමය උත්සාහ කරන්න. තවද PHQ-9 / GAD-7 පරීක්ෂාව හරහා ඔබේ මට්ටම මැනගත හැක." :
+                "To calm your mind, try our Breathing exercise or Grounding technique from the top menu.";
+        }
+
+        if (txt.includes('sad') || txt.includes('depress') || txt.includes('දුක') || txt.includes('අඬන්න')) {
+            return isSi ?
+                "දුක හිතෙන එක සාමාන්‍ය දෙයක්. ටිකක් එළිමහනේ ඇවිදින්න, සන්සුන් සංගීතයකට සවන් දෙන්න. ඔබට වෘත්තීය උපදේශනය අවශ්‍ය නම් 'උපදේශනය' කොටසින් Booking එකක් තබන්න." :
+                "Feeling down happens to everyone. Take a brief outdoor walk or listen to calming music.";
+        }
+
+        if (txt.includes('hi') || txt.includes('hello') || txt.includes('හලෝ') || txt.includes('ආයුබෝවන්')) {
+            return isSi ? 
+                "ආයුබෝවන්! අද ඔබට මානසිකව දැනෙන්නේ කෙසේද? ඕනෑම දෙයක් කතා කරන්න මම මෙහි සිටිමි." :
+                "Hello! How are you feeling today? I am here to support you.";
+        }
+
+        return isSi ? 
+            "ඔබ පැවසූ දේ මට තේරුණා. මනස සන්සුන්ව තබාගැනීමට අපගේ Daily Self-Care Checklist එක බලන්න හෝ අපගේ උපදේශක සේවාවන් සමඟ සම්බන්ධ වන්න." :
+            "I understand. Consider exploring our Daily Self-Care Checklist or reaching out via our Counseling section.";
+    }
+
+    /* ======================================================================
+       6. APPLICATION INITIALIZATION
+       ====================================================================== */
+    window.onclick = function(e) {
+        if (e.target === document.getElementById('counselingModal')) closeCounselingModal();
+        if (e.target === document.getElementById('breathModal')) closeBreathingModal();
+        if (e.target === document.getElementById('groundingModal')) closeGroundingModal();
+    };
+
+    renderGroundingList();
+    renderDirectoryTable();
+    renderCurrentStep();
+    renderMoodLogs();
+    updateChart();
+</script>
+</body>
+</html>
