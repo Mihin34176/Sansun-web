@@ -45,277 +45,233 @@
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
 
-        .navbar {
+        /* Navigation Header Mobile Friendly */
+        header, .navbar, .nav-container {
             position: sticky; top: 0; background: var(--card-bg);
-            border-bottom: 1px solid var(--border); padding: 15px 30px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            border-bottom: 1px solid var(--border); padding: 10px 15px;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+            gap: 8px; z-index: 1000;
         }
-        /* Navigation Header */
-header, .navbar, .nav-container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 10px 15px;
-}
 
-/* Header Buttons */
-.nav-buttons, .action-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    align-items: center;
-}
-
-.nav-buttons button, .nav-buttons a {
-    font-size: 13px; /* mobile එකට ගැලපෙන ලෙස font size අඩු කිරීම */
-    padding: 6px 12px;
-    white-space: nowrap;
-}
-        .logo { font-size: 1.3rem; font-weight: 700; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        .nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text-main); font-weight: 500; font-size: 0.95rem; }
-        .nav-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .logo { font-size: 1.2rem; font-weight: 700; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .nav-links { display: flex; gap: 15px; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-main); font-weight: 500; font-size: 0.9rem; }
+        
+        .nav-controls, .nav-buttons, .action-buttons {
+            display: flex; gap: 6px; align-items: center; flex-wrap: wrap;
+        }
 
         .btn-ctrl {
             background: var(--primary-light); border: 1px solid var(--border);
-            color: var(--primary); padding: 8px 14px; border-radius: 30px;
-            cursor: pointer; font-weight: 600; font-size: 0.85rem;
-            display: flex; align-items: center; gap: 6px; text-decoration: none;
+            color: var(--primary); padding: 6px 12px; border-radius: 30px;
+            cursor: pointer; font-weight: 600; font-size: 0.8rem;
+            display: flex; align-items: center; gap: 5px; text-decoration: none;
+            white-space: nowrap;
         }
 
-        .wrapper { max-width: 1050px; margin: 0 auto; padding: 0 20px; }
+        .wrapper { max-width: 1050px; margin: 0 auto; padding: 0 15px; }
 
         .audio-bar {
             background: var(--card-bg); border-bottom: 1px solid var(--border);
-            padding: 10px 20px; display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 0.9rem; flex-wrap: wrap;
+            padding: 8px 15px; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.85rem; flex-wrap: wrap;
         }
 
+        /* Hero Section Fixes */
         .hero {
-            padding: 50px 20px; background: linear-gradient(180deg, var(--primary-light) 0%, var(--bg) 100%);
+            padding: 30px 15px; background: linear-gradient(180deg, var(--primary-light) 0%, var(--bg) 100%);
             border-bottom: 1px solid var(--border);
         }
-        /* Hero Title */
-h1, .hero-title {
-    font-size: 1.6rem; /* Phone වලට සුදුසු ප්‍රමාණය */
-    line-height: 1.3;
-    text-align: center;
-    margin: 15px 0;
-}
+        
+        h1, .hero-title, .hero-text h2 {
+            font-size: 1.5rem !important;
+            line-height: 1.3;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: 700;
+        }
 
-/* Subtitle */
-p.hero-subtitle, .subtitle {
-    font-size: 0.95rem;
-    text-align: center;
-    color: #666;
-    max-width: 90%;
-    margin: 0 auto 15px auto;
-}
-        .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; }
-        .hero-text h2 { font-size: 2.2rem; color: var(--text-main); margin-bottom: 15px; font-weight: 700; }
-        .hero-text p { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 25px; }
-    .hero-image-container img, .main-img {
-    width: 100%;
-    max-width: 350px; /* Mobile වලදී Image එක වැඩිපුර ලොකු වීම වැළැක්වීමට */
-    height: auto;
-    border-radius: 20px; /* Rounded Corners */
-    display: block;
-    margin: 20px auto;
-    object-fit: cover;
-}
+        p.hero-subtitle, .hero-text p, .subtitle {
+            font-size: 0.9rem !important;
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 95%;
+            margin: 0 auto 15px auto;
+        }
+
+        .hero-grid { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: center; text-align: center; }
+
         .btn-action {
-            background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px;
-            text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer;
+            background: var(--primary); color: white; padding: 10px 20px; border-radius: 30px;
+            text-decoration: none; font-weight: 600; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer;
         }
 
         .btn-whatsapp { background-color: var(--whatsapp); color: white; }
-        .hero-image img { width: 100%; max-width: 380px; border-radius: 24px; box-shadow: var(--shadow); display: block; margin: 0 auto; }
 
-        .section { padding: 50px 0; border-bottom: 1px solid var(--border); }
-        .section-title { text-align: center; font-size: 1.6rem; color: var(--primary); margin-bottom: 30px; font-weight: 700; }
+        .hero-image-container img, .hero-image img, .main-img {
+            width: 100%;
+            max-width: 340px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            display: block;
+            margin: 15px auto;
+            object-fit: cover;
+        }
+
+        .section { padding: 35px 0; border-bottom: 1px solid var(--border); }
+        .section-title { text-align: center; font-size: 1.4rem; color: var(--primary); margin-bottom: 20px; font-weight: 700; }
+
+        /* Mood Journal Emoji Size Fix */
+        .mood-grid, .mood-container, .emoji-picker {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .mood-btn, .emoji-btn {
+            font-size: 24px !important;
+            width: 48px;
+            height: 48px;
+            padding: 0;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background-color: var(--card-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .mood-btn:hover, .mood-btn.selected {
+            transform: scale(1.1);
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
 
         .counseling-banner {
             background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #ffffff; padding: 25px; border-radius: var(--radius);
-            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 35px; box-shadow: var(--shadow);
+            color: #ffffff; padding: 20px; border-radius: var(--radius);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 25px; box-shadow: var(--shadow);
         }
 
-        .banner-content h3 { font-size: 1.25rem; margin-bottom: 5px; color: #ffffff; }
-        .banner-content p { font-size: 0.95rem; opacity: 0.9; color: #ffffff; }
-        .banner-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .banner-content h3 { font-size: 1.15rem; margin-bottom: 5px; color: #ffffff; }
+        .banner-content p { font-size: 0.88rem; opacity: 0.9; color: #ffffff; }
+        .banner-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-        .btn-banner-primary { background-color: #ffffff; color: var(--primary); padding: 10px 18px; border-radius: 30px; font-weight: 700; border: none; cursor: pointer; }
-        .btn-banner-emergency { background-color: var(--danger); color: #ffffff; padding: 10px 18px; border-radius: 30px; font-weight: 700; text-decoration: none; }
-
-        .mood-grid { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
-        .mood-btn {
-            font-size: 2.2rem; background: var(--card-bg); border: 2px solid var(--border);
-            padding: 10px 20px; border-radius: 16px; cursor: pointer; transition: transform 0.2s;
-        }
-        .mood-btn:hover, .mood-btn.selected { transform: scale(1.15); border-color: var(--primary); background: var(--primary-light); }
+        .btn-banner-primary { background-color: #ffffff; color: var(--primary); padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; border: none; cursor: pointer; }
+        .btn-banner-emergency { background-color: var(--danger); color: #ffffff; padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; text-decoration: none; }
 
         .wizard-container {
             max-width: 650px; margin: 0 auto; background: var(--card-bg);
-            padding: 35px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border);
+            padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border);
         }
 
-        .tab-container { display: flex; background: var(--primary-light); padding: 5px; border-radius: 14px; gap: 5px; margin-bottom: 25px; }
-        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted); font-weight: 600; border-radius: 10px; cursor: pointer; }
+        .tab-container { display: flex; background: var(--primary-light); padding: 4px; border-radius: 12px; gap: 4px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 8px; border: none; background: transparent; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; border-radius: 8px; cursor: pointer; }
         .tab-btn.active { background: var(--card-bg); color: var(--primary); }
 
-        .progress-bar-bg { width: 100%; height: 6px; background: var(--primary-light); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        .progress-bar-bg { width: 100%; height: 6px; background: var(--primary-light); border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
         .progress-bar-fill { height: 100%; width: 0%; background: var(--primary); transition: width 0.3s; }
 
-        .options-group { display: grid; gap: 10px; margin: 20px 0; }
-        .option-btn { background: var(--bg); border: 1.5px solid var(--border); padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 500; display: block; }
+        .options-group { display: grid; gap: 8px; margin: 15px 0; }
+        .option-btn { background: var(--bg); border: 1.5px solid var(--border); padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; font-weight: 500; display: block; }
         input[type="radio"] { display: none; }
         input[type="radio"]:checked + .option-btn { background: var(--primary-light); color: var(--primary); border-color: var(--primary); font-weight: 600; }
 
         .nav-actions { display: flex; gap: 10px; }
-        .btn-nav { flex: 1; padding: 12px; border-radius: 10px; font-weight: 600; border: none; cursor: pointer; }
+        .btn-nav { flex: 1; padding: 10px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; border: none; cursor: pointer; }
         .btn-prev { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
         .btn-next { background: var(--primary); color: white; }
 
-        .checklist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-        .check-item { background: var(--card-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+        .checklist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+        .check-item { background: var(--card-bg); padding: 12px 15px; border-radius: 12px; border: 1px solid var(--border); font-size: 0.88rem; display: flex; align-items: center; gap: 10px; }
 
-        .helpline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 25px; }
-        .helpline-card { background: var(--card-bg); padding: 22px; border-radius: 14px; border: 1px solid var(--border); text-align: center; }
-        .helpline-card i { font-size: 1.3rem; color: var(--primary); margin-bottom: 8px; }
-        .helpline-card strong { color: var(--primary); font-size: 1.3rem; display: block; }
-        .helpline-card span { font-size: 0.85rem; color: var(--text-muted); }
+        .helpline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 20px; }
+        .helpline-card { background: var(--card-bg); padding: 16px; border-radius: 14px; border: 1px solid var(--border); text-align: center; }
+        .helpline-card i { font-size: 1.2rem; color: var(--primary); margin-bottom: 6px; }
+        .helpline-card strong { color: var(--primary); font-size: 1.2rem; display: block; }
+        .helpline-card span { font-size: 0.8rem; color: var(--text-muted); }
 
-        .directory-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
-        .directory-table th, .directory-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .directory-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+        .directory-table th, .directory-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
         .directory-table th { background: var(--primary-light); color: var(--primary); font-weight: 700; }
 
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--card-bg); padding: 35px; border-radius: var(--radius); text-align: left; max-width: 520px; width: 90%; position: relative; box-shadow: var(--shadow); max-height: 90vh; overflow-y: auto; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; border: none; background: none; }
+        .modal-content { background: var(--card-bg); padding: 25px; border-radius: var(--radius); text-align: left; max-width: 480px; width: 92%; position: relative; box-shadow: var(--shadow); max-height: 90vh; overflow-y: auto; }
+        .close-btn { position: absolute; top: 12px; right: 15px; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; border: none; background: none; }
 
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; }
         .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
-            background: var(--bg); color: var(--text-main); font-size: 0.9rem;
+            width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);
+            background: var(--bg); color: var(--text-main); font-size: 0.85rem;
         }
 
         .breath-circle {
-            width: 140px; height: 140px; background: var(--primary-light); border: 4px solid var(--primary);
-            border-radius: 50%; margin: 30px auto; display: flex; justify-content: center; align-items: center;
-            font-weight: bold; color: var(--primary); font-size: 1.1rem; transition: transform 4s ease-in-out;
+            width: 120px; height: 120px; background: var(--primary-light); border: 4px solid var(--primary);
+            border-radius: 50%; margin: 20px auto; display: flex; justify-content: center; align-items: center;
+            font-weight: bold; color: var(--primary); font-size: 1rem; transition: transform 4s ease-in-out;
         }
-        .breath-circle.expand { transform: scale(1.3); transition: transform 4s ease-in-out; }
-        .breath-circle.hold { transform: scale(1.3); }
+        .breath-circle.expand { transform: scale(1.25); transition: transform 4s ease-in-out; }
+        .breath-circle.hold { transform: scale(1.25); }
         .breath-circle.shrink { transform: scale(0.9); transition: transform 8s ease-in-out; }
 
-        .grounding-list { list-style: none; margin: 15px 0; }
-        .grounding-list li { background: var(--bg); padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--primary); font-size: 0.9rem; }
+        .grounding-list { list-style: none; margin: 12px 0; }
+        .grounding-list li { background: var(--bg); padding: 10px; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid var(--primary); font-size: 0.85rem; }
 
         /* CHATBOT STYLES */
         .chatbot-toggle {
-            position: fixed; bottom: 25px; right: 25px;
-            width: 60px; height: 60px; border-radius: 50%;
+            position: fixed; bottom: 20px; right: 20px;
+            width: 55px; height: 55px; border-radius: 50%;
             background: var(--primary); color: white; border: none;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2); cursor: pointer;
-            z-index: 1500; font-size: 1.5rem; display: flex;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2); cursor: pointer;
+            z-index: 1500; font-size: 1.3rem; display: flex;
             align-items: center; justify-content: center;
-            transition: transform 0.2s, background-color 0.2s;
         }
-        .chatbot-toggle:hover { transform: scale(1.1); background: var(--primary-hover); }
 
         .chatbot-window {
-            position: fixed; bottom: 95px; right: 25px;
-            width: 380px; height: 530px; max-width: calc(100vw - 40px);
+            position: fixed; bottom: 85px; right: 15px;
+            width: 360px; height: 500px; max-width: calc(100vw - 30px);
             background: var(--card-bg); border: 1px solid var(--border);
             border-radius: var(--radius); box-shadow: var(--shadow);
             z-index: 1500; display: none; flex-direction: column;
-            overflow: hidden; animation: slideUp 0.3s ease-out;
+            overflow: hidden;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .chat-header {
-            background: var(--primary); color: white;
-            padding: 15px; display: flex; justify-content: space-between;
-            align-items: center; font-weight: 600;
-        }
+        .chat-header { background: var(--primary); color: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 0.9rem; }
         .chat-header div { display: flex; align-items: center; gap: 8px; }
-        .chat-header button { background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer; }
+        .chat-header button { background: none; border: none; color: white; font-size: 1rem; cursor: pointer; }
 
         .chat-body {
-            flex: 1; padding: 15px; overflow-y: auto;
-            display: flex; flex-direction: column; gap: 10px;
-            background: var(--bg); font-size: 0.9rem;
-            font-family: 'Noto Sans Sinhala', 'Plus Jakarta Sans', sans-serif;
-            line-height: 1.6;
-            letter-spacing: 0.3px;
-            word-break: break-word;
+            flex: 1; padding: 12px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 8px;
+            background: var(--bg); font-size: 0.85rem; line-height: 1.5; word-break: break-word;
         }
 
-        .chat-msg {
-            max-width: 82%; 
-            padding: 10px 14px; 
-            border-radius: 16px;
-            line-height: 1.6; 
-            word-wrap: break-word; 
-            font-size: 0.9rem;
-            font-family: 'Noto Sans Sinhala', 'Plus Jakarta Sans', sans-serif;
-            letter-spacing: 0.3px;
-            white-space: pre-wrap;
-        }
-        .chat-msg.bot {
-            background: var(--card-bg); color: var(--text-main);
-            align-self: flex-start; border: 1px solid var(--border);
-            border-bottom-left-radius: 4px;
-        }
-        .chat-msg.user {
-            background: var(--primary); color: white;
-            align-self: flex-end; border-bottom-right-radius: 4px;
-        }
+        .chat-msg { max-width: 85%; padding: 8px 12px; border-radius: 14px; white-space: pre-wrap; }
+        .chat-msg.bot { background: var(--card-bg); color: var(--text-main); align-self: flex-start; border: 1px solid var(--border); border-bottom-left-radius: 2px; }
+        .chat-msg.user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
 
-        .quick-chips {
-            display: flex; gap: 6px; padding: 8px 12px;
-            overflow-x: auto; background: var(--card-bg);
-            border-top: 1px solid var(--border);
-        }
-        .quick-chips button {
-            background: var(--bg); border: 1.5px solid var(--border);
-            color: var(--text-main); border-radius: 20px; padding: 5px 10px;
-            font-size: 0.78rem; white-space: nowrap; cursor: pointer; transition: 0.2s;
-            font-family: 'Noto Sans Sinhala', 'Plus Jakarta Sans', sans-serif;
-        }
-        .quick-chips button:hover {
-            background: var(--primary-light); color: var(--primary); border-color: var(--primary);
-        }
+        .quick-chips { display: flex; gap: 5px; padding: 6px 10px; overflow-x: auto; background: var(--card-bg); border-top: 1px solid var(--border); }
+        .quick-chips button { background: var(--bg); border: 1px solid var(--border); color: var(--text-main); border-radius: 15px; padding: 4px 8px; font-size: 0.75rem; white-space: nowrap; cursor: pointer; }
 
-        .chat-input-area {
-            display: flex; padding: 10px; background: var(--card-bg);
-            border-top: 1px solid var(--border); gap: 6px; align-items: center;
+        .chat-input-area { display: flex; padding: 8px; background: var(--card-bg); border-top: 1px solid var(--border); gap: 5px; align-items: center; }
+        .chat-input-area input { flex: 1; padding: 8px 12px; border-radius: 18px; border: 1px solid var(--border); background: var(--bg); color: var(--text-main); font-size: 0.85rem; outline: none; }
+        .chat-input-area button { background: var(--primary); color: white; border: none; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+
+        @media (min-width: 769px) {
+            .hero-grid { grid-template-columns: 1.2fr 1fr; text-align: left; }
+            h1, .hero-title, .hero-text h2 { text-align: left; font-size: 2rem !important; }
+            p.hero-subtitle, .hero-text p, .subtitle { text-align: left; margin: 0 0 20px 0; }
+            .hero-image-container img, .hero-image img, .main-img { margin: 0 auto; }
         }
-        .chat-input-area input {
-            flex: 1; padding: 10px 14px; border-radius: 20px;
-            border: 1px solid var(--border); background: var(--bg);
-            color: var(--text-main); font-size: 0.88rem; outline: none;
-            font-family: 'Noto Sans Sinhala', 'Plus Jakarta Sans', sans-serif;
-        }
-        .chat-input-area button {
-            background: var(--primary); color: white; border: none;
-            width: 38px; height: 38px; border-radius: 50%;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-        }
-        #micBtn { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
-        #micBtn.recording { background: var(--danger); color: white; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
         @media (max-width: 768px) { 
-            .hero-grid { grid-template-columns: 1fr; text-align: center; } 
             .nav-links { display: none; }
-            .chatbot-window { right: 15px; bottom: 85px; width: calc(100vw - 30px); }
         }
     </style>
 </head>
@@ -356,13 +312,13 @@ p.hero-subtitle, .subtitle {
             <div class="hero-text">
                 <h2 id="heroTitle">ඔබේ මානසික සුවතාවය වෙනුවෙන් සුරක්ෂිත ඉඩක්</h2>
                 <p id="heroDesc">දෛනික ජීවිතයේ පීඩනය හඳුනාගෙන මනස සන්සුන් කරගැනීමට අවශ්‍ය පහසුකම් මෙහි ඇතුළත් වේ.</p>
-                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content: center;">
                     <a href="#assessment" class="btn-action"><i class="fa-solid fa-heart-pulse"></i> <span id="heroBtn">පරීක්ෂාව ආරම්භ කරන්න</span></a>
                     <button class="btn-action btn-whatsapp" onclick="window.open('https://wa.me/94771234567?text=Hello%20Sansun%20Support','_blank')"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</button>
                 </div>
             </div>
             <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Relaxation">
+                <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Relaxation" class="main-img">
             </div>
         </div>
     </div>
@@ -578,10 +534,10 @@ p.hero-subtitle, .subtitle {
 <div class="modal" id="breathModal">
     <div class="modal-content" style="text-align: center;">
         <h3>4-7-8 Breathing Technique</h3>
-        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:5px;" id="breathModalSub">මනස සන්සුන් කර ගැනීමට පහත උපදෙස් අනුගමනය කරන්න.</p>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:5px;" id="breathModalSub">මනස සන්සුන් කර ගැනීමට පහත උපදෙස් අනුගමනය කරන්න.</p>
         <div class="breath-circle" id="breathCircle">ලෑස්ති වන්න...</div>
-        <p id="breathInstruction" style="font-weight:600; color:var(--primary);"></p>
-        <button class="btn-action" style="margin-top:20px;" onclick="closeBreathingModal()" id="closeBreathBtn">වසා දමන්න</button>
+        <p id="breathInstruction" style="font-weight:600; color:var(--primary); font-size:0.9rem;"></p>
+        <button class="btn-action" style="margin-top:15px;" onclick="closeBreathingModal()" id="closeBreathBtn">වසා දමන්න</button>
     </div>
 </div>
 
@@ -590,13 +546,13 @@ p.hero-subtitle, .subtitle {
     <div class="modal-content">
         <button class="close-btn" onclick="closeGroundingModal()">&times;</button>
         <h3 style="color:var(--primary); margin-bottom:10px;" id="groundTitle">5-4-3-2-1 Grounding Technique</h3>
-        <p style="font-size:0.88rem; color:var(--text-muted);" id="groundSub">Panic Attack එකක් හෝ අධික බියක් දැනෙන විට මනස වර්තමානයට ගෙන ඒමට මෙය භාවිතා කරන්න:</p>
+        <p style="font-size:0.85rem; color:var(--text-muted);" id="groundSub">Panic Attack එකක් හෝ අධික බියක් දැනෙන විට මනස වර්තමානයට ගෙන ඒමට මෙය භාවිතා කරන්න:</p>
         <ul class="grounding-list" id="groundList"></ul>
         <button class="btn-action" style="width:100%; justify-content:center;" onclick="closeGroundingModal()" id="groundCloseBtn">තේරුණා / Close</button>
     </div>
 </div>
 
-<footer style="text-align:center; padding:30px; font-size:0.85rem; color:var(--text-muted);" id="footerText">
+<footer style="text-align:center; padding:20px 15px; font-size:0.8rem; color:var(--text-muted);" id="footerText">
     <p>© 2026 Sansun Health. Medical Disclaimer: This screening tool is for educational purposes only and not a clinical diagnosis.</p>
 </footer>
 
@@ -604,14 +560,10 @@ p.hero-subtitle, .subtitle {
     /* ======================================================================
        1. GLOBAL CONFIGURATION & DATA DICTIONARIES
        ====================================================================== */
-   /* ======================================================================
-   1. GLOBAL CONFIGURATION & DATA DICTIONARIES
-   ====================================================================== */
-const APP_CONFIG = {
-    // Vercel URL එක + /api/chat
-    apiEndpoint: 'https://sansun-web.vercel.app/api/chat', 
-    whatsappNumber: '94771234567'
-};
+    const APP_CONFIG = {
+        apiEndpoint: 'https://sansun-web.vercel.app/api/chat', 
+        whatsappNumber: '94771234567'
+    };
 
     const TRANSLATIONS = {
         si: {
@@ -871,7 +823,7 @@ const APP_CONFIG = {
             `;
         });
 
-        container.innerHTML = `<p style="font-weight:600; margin-bottom:15px;">${questions[currentStep]}</p><div class="options-group">${opts}</div>`;
+        container.innerHTML = `<p style="font-weight:600; margin-bottom:15px; font-size:0.95rem;">${questions[currentStep]}</p><div class="options-group">${opts}</div>`;
         document.getElementById('prevBtn').disabled = currentStep === 0;
     }
 
@@ -932,7 +884,7 @@ const APP_CONFIG = {
 
     function updateChart() {
         if (userPin && !isUnlocked) {
-            document.getElementById('protectedHistoryContent').innerHTML = `<p style="text-align:center; padding:20px;">${TRANSLATIONS[currentLang].chartLocked}</p>`;
+            document.getElementById('protectedHistoryContent').innerHTML = `<p style="text-align:center; padding:20px; font-size:0.9rem;">${TRANSLATIONS[currentLang].chartLocked}</p>`;
             return;
         }
 
@@ -1004,13 +956,11 @@ const APP_CONFIG = {
         };
 
         try {
-           // handleCounselingSubmit function එක ඇතුළේ[cite: 1]:
-const response = await fetch('https://sansun-web.vercel.app/api/counseling', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-});
-           
+            const response = await fetch('https://sansun-web.vercel.app/api/counseling', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
 
             if (response.ok) {
                 alert(currentLang === 'si' ? "උපදේශන ඉල්ලීම සාර්ථකව යොමු කරන ලදී!" : "Counseling request submitted successfully!");
