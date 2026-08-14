@@ -11,6 +11,12 @@ app.use(cors());
 app.use(express.json());
 // Static files serve කිරීමට (HTML, CSS, JS)
 app.use(express.static(__dirname));
+const path = require('path'); // server.js උඩම require('path') නැත්නම් මේක උඩටම දාන්න
+
+// Main site (index.html) එක serve කරන්න
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
