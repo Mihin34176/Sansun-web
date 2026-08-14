@@ -9,6 +9,15 @@ const PORT = process.env.PORT || 5000;
 // Middlewares
 app.use(cors());
 app.use(express.json());
+const path = require('path');
+
+// Static files (CSS, Images, JS) serve කිරීමට
+app.use(express.static(path.join(__dirname)));
+
+// Main root route එකට ගියාම index.html පෙන්නන්න
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 // Static files serve කිරීමට (HTML, CSS, JS)
 app.use(express.static(__dirname));
 const path = require('path'); // server.js උඩම require('path') නැත්නම් මේක උඩටම දාන්න
