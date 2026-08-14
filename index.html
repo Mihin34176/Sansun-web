@@ -466,7 +466,8 @@
         <div><i class="fa-solid fa-robot"></i> <span id="chatTitle">සන්සුන් AI සහායක</span></div>
         <div>
             <button id="ttsToggleBtn" onclick="toggleTTS()" aria-label="Read Aloud"><i class="fa-solid fa-volume-xmark" id="ttsIcon"></i></button>
-            <button onclick="toggleChatbot()" aria-label="Close Chatbot">&times;</button>
+            <!-- HTML එකේ chat-header ඇතුළේ තියෙන button එක: -->
+<button onclick="toggleChatbot()" aria-label="Close Chatbot">&times;</button>
         </div>
     </div>
     <div class="chat-body" id="chatBody">
@@ -1062,9 +1063,19 @@
     }
 
     function toggleChatbot() {
-        const win = document.getElementById('chatbotWindow');
-        win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+    const win = document.getElementById('chatbotWindow');
+    const isOpening = (win.style.display !== 'flex');
+
+    if (isOpening) {
+        win.style.display = 'flex';
+    } else {
+        win.style.display = 'none';
+        // Chatbot එක වහද්දී කතා කරන එක එකපාරටම නතර කරන්න
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+        }
     }
+}
 
     function handleChatKeyPress(e) {
         if (e.key === 'Enter') sendChatMessage();
@@ -1076,10 +1087,15 @@
     }
 
     function toggleTTS() {
-        isTTSEnabled = !isTTSEnabled;
-        const icon = document.getElementById('ttsIcon');
-        icon.className = isTTSEnabled ? "fa-solid fa-volume-high" : "fa-solid fa-volume-xmark";
+    isTTSEnabled = !isTTSEnabled;
+    const icon = document.getElementById('ttsIcon');
+    icon.className = isTTSEnabled ? "fa-solid fa-volume-high" : "fa-solid fa-volume-xmark";
+    
+    // Mute කරපු ගමන් දැනට කතා කරන එක නතර කරන්න
+    if (!isTTSEnabled && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
     }
+}
 
     function startVoiceInput() {
         const micBtn = document.getElementById('micBtn');
