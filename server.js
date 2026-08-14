@@ -45,13 +45,13 @@ app.post('/api/chat', async (req, res) => {
         // Get the latest user message
         const lastUserMessage = history[history.length - 1]?.parts[0]?.text || '';
 
-        // Most reliable model identifier across all SDK versions
-        const model = genAI.getGenerativeModel({ 
-            model: "gemini-1.5-flash",
-            systemInstruction: SYSTEM_INSTRUCTION
-        });
+        // Universal model (No extra options that break old SDKs)
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-        const result = await model.generateContent(lastUserMessage);
+        // Combine System Prompt with User Prompt
+        const prompt = `${SYSTEM_INSTRUCTION}\n\nUser message: ${lastUserMessage}`;
+
+        const result = await model.generateContent(prompt);
         const reply = result.response.text();
 
         res.json({ reply });
