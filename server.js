@@ -45,8 +45,10 @@ app.post('/api/chat', async (req, res) => {
         // Get the latest user message
         const lastUserMessage = history[history.length - 1]?.parts[0]?.text || '';
 
-        // Universal model (No extra options that break old SDKs)
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        // Exact working model name from your API key's model list
+        const model = genAI.getGenerativeModel({ 
+            model: "gemini-2.5-flash"
+        });
 
         // Combine System Prompt with User Prompt
         const prompt = `${SYSTEM_INSTRUCTION}\n\nUser message: ${lastUserMessage}`;
