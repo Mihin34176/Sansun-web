@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Sansun</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --main-bg: #f8fafc;
+            --primary: #4a7c59;
+            --primary-light: #eef4f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--main-bg); color: var(--text-dark); }
+
+        .navbar { 
+            background: #ffffff; 
+            padding: 1.2rem 2.5rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03); 
+        }
+        .logo { font-size: 1.4rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .user-nav-profile { display: flex; align-items: center; gap: 14px; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+        .container { max-width: 1200px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        
+        .welcome-card { 
+            background: linear-gradient(135deg, #4a7c59, #3b6346); 
+            color: white; 
+            border-radius: 20px; 
+            padding: 2.5rem; 
+            margin-bottom: 2rem; 
+            box-shadow: 0 15px 30px rgba(74, 124, 89, 0.25); 
+        }
+        .welcome-card h2 { font-size: 1.8rem; font-weight: 700; }
+        .welcome-card p { opacity: 0.9; margin-top: 6px; font-size: 0.95rem; }
+
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
+
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        .card { 
+            background: #ffffff; 
+            border-radius: 18px; 
+            padding: 1.8rem; 
+            box-shadow: var(--card-shadow); 
+            margin-bottom: 2rem; 
+        }
+        .card-header { 
+            font-size: 1.1rem; 
+            font-weight: 700; 
+            color: var(--text-dark); 
+            margin-bottom: 1.2rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            border-bottom: 1px solid #f1f5f9; 
+            padding-bottom: 0.8rem; 
+        }
+
+        .info-group { margin-bottom: 1.2rem; }
+        .info-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-val { font-weight: 600; font-size: 0.95rem; color: var(--text-dark); margin-top: 2px; }
+
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+        .form-group input, .form-group select { 
+            width: 100%; 
+            padding: 10px 14px; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 10px; 
+            font-size: 0.9rem; 
+            outline: none;
+            transition: 0.2s ease;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
+
+        .btn-submit { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 10px 18px; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            width: 100%;
+            font-size: 0.9rem;
+            transition: 0.2s ease;
+        }
+        .btn-submit:hover { background: #3b6346; }
+
+        .event-card { 
+            background: var(--primary-light); 
+            border-left: 4px solid var(--primary); 
+            border-radius: 12px; 
+            padding: 1.2rem; 
+            margin-bottom: 1rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            transition: transform 0.2s ease;
+        }
+        .event-card:hover { transform: translateY(-2px); }
+
+        .badge { padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-block; }
+        .badge.upcoming { background: #dcfce7; color: #15803d; }
+        .badge.pending { background: #fff7ed; color: #c2410c; }
+        .badge.history { background: #f1f5f9; color: #64748b; }
+
+        .btn-logout { 
+            background: #fee2e2; 
+            color: #ef4444; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-logout:hover { background: #fca5a5; }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar Header -->
+    <nav class="navbar">
+        <a href="index.html" class="logo"><i class="fa-solid fa-heart-pulse"></i> සන්සුන් Dashboard</a>
+        <div class="user-nav-profile">
+            <div class="avatar" id="userAvatar">U</div>
+            <button class="btn-logout" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Welcome Banner -->
+        <div class="welcome-card">
+            <h2 id="welcomeText">ආයුබෝවන්! 👋</h2>
+            <p>ඔබේ මානසික සුවතාවයේ ඉදිරි වැඩසටහන් සහ සටහන් මෙතැනින් බලන්න.</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Left Side: Profile & New Session Form -->
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <span><i class="fa-regular fa-id-card"></i> Profile</span>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">නම</div>
+                        <div class="info-val" id="profileName">User</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">ඊමේල්</div>
+                        <div class="info-val" id="profileEmail">user@example.com</div>
+                    </div>
+                </div>
+
+                <!-- Booking Form Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span><i class="fa-regular fa-calendar-plus"></i> Session එකක් Book කරන්න</span>
+                    </div>
+                    <form id="bookingForm" onsubmit="handleBooking(event)">
+                        <div class="form-group">
+                            <label>උපදේශන වර්ගය</label>
+                            <select id="sessionType" required>
+                                <option value="මානසික සහන සාකච්ඡාව">මානසික සහන සාකච්ඡාව</option>
+                                <option value="Personal Counseling">Personal Counseling</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>දිනය</label>
+                            <input type="date" id="sessionDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>වේලාව</label>
+                            <input type="time" id="sessionTime" required>
+                        </div>
+                        <button type="submit" class="btn-submit"><i class="fa-solid fa-paper-plane"></i> ඉල්ලීම යොමු කරන්න</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Side: Reminders & Counseling History -->
+            <div>
+                <!-- Upcoming Reminders Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span><i class="fa-regular fa-calendar-check"></i> ඉදිරි Reminders & Events</span>
+                    </div>
+                    <div id="eventsContainer">
+                        <div class="event-card">
+                            <div>
+                                <strong style="color: var(--text-dark);">මානසික සහන සාකච්ඡාව</strong>
+                                <p style="font-size:0.85rem; color: var(--text-muted); margin-top: 4px;">
+                                    <i class="fa-regular fa-clock"></i> 2026-09-10 | පෙ.ව. 10:00
+                                </p>
+                            </div>
+                            <span class="badge upcoming">Upcoming</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Counseling History Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span><i class="fa-solid fa-clock-rotate-left"></i> පසුගිය ඉතිහාසය (Counseling History)</span>
+                    </div>
+                    <div class="event-card" style="background:#f8fafc; border-left-color:#94a3b8;">
+                        <div>
+                            <strong style="color: var(--text-dark);">පළමු උපදේශන වාරය</strong>
+                            <p style="font-size:0.85rem; color: var(--text-muted); margin-top: 4px;">
+                                <i class="fa-regular fa-circle-check"></i> 2026-08-15 - Dr. Perera සමඟ
+                            </p>
+                        </div>
+                        <span class="badge history">Completed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = JSON.parse(localStorage.getItem('sansun_user'));
+            if (!user) {
+               // alert('කරුණාකර පළමුව ගිණුමට පිවිසෙන්න.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Load user dynamic data
+            const name = user.name || user.email.split('@')[0];
+            document.getElementById('welcomeText').innerText = `ආයුබෝවන්, ${name}! 👋`;
+            document.getElementById('profileName').innerText = name;
+            document.getElementById('profileEmail').innerText = user.email;
+            document.getElementById('userAvatar').innerText = name.charAt(0).toUpperCase();
+        });
+
+        function handleLogout() {
+            localStorage.removeItem('sansun_user');
+            alert('ඔබ ගිණුමෙන් සාර්ථකව ඉවත් විය.');
+            window.location.href = 'dashboard.html';
+        }
+
+        function handleBooking(event) {
+            event.preventDefault();
+            const type = document.getElementById('sessionType').value;
+            const date = document.getElementById('sessionDate').value;
+            const time = document.getElementById('sessionTime').value;
+
+            const eventsContainer = document.getElementById('eventsContainer');
+            const newEvent = document.createElement('div');
+            newEvent.className = 'event-card';
+            newEvent.style.borderLeftColor = '#f97316';
+            newEvent.style.background = '#fff7ed';
+            newEvent.innerHTML = `
+                <div>
+                    <strong style="color: var(--text-dark);">${type}</strong>
+                    <p style="font-size:0.85rem; color: var(--text-muted); margin-top: 4px;">
+                        <i class="fa-regular fa-clock"></i> ${date} | ${time}
+                    </p>
+                </div>
+                <span class="badge pending">Pending Approval</span>
+            `;
+
+            eventsContainer.prepend(newEvent);
+            document.getElementById('bookingForm').reset();
+            alert('ඔබගේ Session ඉල්ලීම සාර්ථකව යොමු කරන ලදී!');
+        }
+    </script>
+</body>
+</html>
