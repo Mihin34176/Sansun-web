@@ -31,19 +31,25 @@ app.get('/api/models', async (req, res) => {
     }
 });
 
+
 // Chatbot API Endpoint
 app.post('/api/chat', async (req, res) => {
     try {
-        const { history } = req.body;
+        // Frontend එකෙන් 'message' හෝ 'history' ආවොත් දෙකම Handle කරනවා
+        const { message, history } = req.body;
 
-        if (!history || !Array.isArray(history)) {
-            return res.status(400).json({ error: 'Invalid history format' });
+        let lastUserMessage = '';
+
+        if (message) {
+            lastUserMessage = message;
+        } else if (history && Array.isArray(history)) {
+            lastUserMessage = history[history.length - 1]?.parts[0]?.text || '';
+        } else {
+            return res.status(400).json({ error: 'Message field is required' });
         }
 
-        const lastUserMessage = history[history.length - 1]?.parts[0]?.text || '';
-
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-3.1-flash-lite"
+            model: "gemini-1.5-flash"
         });
 
         const prompt = `${SYSTEM_INSTRUCTION}\n\nUser message: ${lastUserMessage}`;
