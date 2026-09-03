@@ -474,37 +474,7 @@
     </div>
 </section>
 
-<!-- CHATBOT WIDGET -->
-<button class="chatbot-toggle" onclick="toggleChatbot()" id="chatToggleBtn" aria-label="Open Chatbot">
-    <i class="fa-solid fa-comments"></i>
-</button>
 
-<div class="chatbot-window" id="chatbotWindow">
-    <div class="chat-header">
-        <div><i class="fa-solid fa-robot"></i> <span id="chatTitle">සන්සුන් AI සහායක</span></div>
-        <div>
-            <button id="ttsToggleBtn" onclick="toggleTTS()" aria-label="Read Aloud"><i class="fa-solid fa-volume-xmark" id="ttsIcon"></i></button>
-            <button onclick="toggleChatbot()" aria-label="Close Chatbot">&times;</button>
-        </div>
-    </div>
-    <div class="chat-body" id="chatBody">
-        <div class="chat-msg bot" id="botIntroMsg">
-            ආයුබෝවන්! 👋 මම 'සන්සුන්' AI සහායක. ඔබට අද දැනෙන දේ හෝ සිතට වදදෙන ඕනෑම දෙයක් මා සමඟ බෙදාගන්න පුළුවන්. මා ඔබට උදවු කරන්නේ කෙසේද?
-        </div>
-    </div>
-    
-    <div class="quick-chips">
-        <button onclick="sendQuickMsg('මට මානසික පීඩනයක් දැනෙනවා')">🧘‍♂️ පීඩනයක් දැනෙනවා</button>
-        <button onclick="sendQuickMsg('හුස්ම ගැනීමේ ව්‍යායාමය')">🌬️ හුස්ම ගැනීමේ ක්‍රමය</button>
-        <button onclick="sendQuickMsg('1926 Helpline')">📞 Helpline</button>
-    </div>
-
-    <div class="chat-input-area">
-        <button id="micBtn" onclick="startVoiceInput()" aria-label="Voice Input"><i class="fa-solid fa-microphone"></i></button>
-        <input type="text" id="chatInput" placeholder="ඔබේ පණිවිඩය ටයිප් කරන්න..." onkeypress="handleChatKeyPress(event)">
-        <button onclick="sendChatMessage()" aria-label="Send Message"><i class="fa-solid fa-paper-plane"></i></button>
-    </div>
-</div>
 
 <!-- LOGIN / ACCOUNT MODAL -->
 <div class="modal" id="loginModal">
@@ -1307,107 +1277,7 @@
         list.innerHTML = html;
     }
 
-    /* ======================================================================
-       12. CHATBOT MODULE (AI & SPEECH)
-       ====================================================================== */
-    function toggleChatbot() {
-        const win = document.getElementById('chatbotWindow');
-        win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    function toggleTTS() {
-        isTTSEnabled = !isTTSEnabled;
-        const icon = document.getElementById('ttsIcon');
-        icon.className = isTTSEnabled ? "fa-solid fa-volume-high" : "fa-solid fa-volume-xmark";
-    }
-
-    function handleChatKeyPress(event) {
-        if (event.key === 'Enter') sendChatMessage();
-    }
-
-    function sendQuickMsg(text) {
-        document.getElementById('chatInput').value = text;
-        sendChatMessage();
-    }
-
-    function appendChatMessage(text, sender) {
-        const body = document.getElementById('chatBody');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `chat-msg ${sender}`;
-        msgDiv.innerText = text;
-        body.appendChild(msgDiv);
-        body.scrollTop = body.scrollHeight;
-
-        if (sender === 'bot' && isTTSEnabled && 'speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = currentLang === 'si' ? 'si-LK' : 'en-US';
-            window.speechSynthesis.speak(utterance);
-        }
-    }
-
-    async function sendChatMessage() {
-        const input = document.getElementById('chatInput');
-        const text = input.value.trim();
-        if (!text) return;
-
-        appendChatMessage(text, 'user');
-        input.value = '';
-
-        conversationHistory.push({ role: 'user', content: text });
-
-        // Simulate or Fetch API Response
-        try {
-            const response = await fetch(APP_CONFIG.apiEndpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messages: conversationHistory })
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                const botReply = data.reply || data.message || "ස්තූතියි ඔබේ පණිවිඩයට. මට ඔබට තවත් උදවු කළ හැක්කේ කෙසේද?";
-                appendChatMessage(botReply, 'bot');
-                conversationHistory.push({ role: 'assistant', content: botReply });
-            } else {
-                throw new Error('API Error');
-            }
-        } catch (err) {
-            // Fallback response for offline or endpoint unavailability
-            let fallbackReply = "ඔබගේ පණිවිඩය ලැබුණා. මනස සන්සුන් කර ගැනීමට අපගේ Breathing හෝ Grounding exercises භාවිතා කරන්න. හදිසි සහායක් සඳහා 1926 අමතන්න.";
-            if (text.includes("1926") || text.includes("Helpline")) {
-                fallbackReply = "ජාතික මානසික සෞඛ්‍ය උපකාරක අංකය 1926 වේ. CCC Line නොමිලේ සහාය සඳහා 1333 අමතන්න.";
-            } else if (text.includes("හුස්ම")) {
-                fallbackReply = "මනස සන්සුන් කිරීමට 'හුස්ම' බොත්තම ඔබා 4-7-8 හුස්ම ගැනීමේ ව්‍යායාමය ආරම්භ කරන්න.";
-            }
-            appendChatMessage(fallbackReply, 'bot');
-        }
-    }
-
-    function startVoiceInput() {
-        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-            alert(currentLang === 'si' ? "ඔබගේ බ්‍රවුසරය Voice Input සඳහා සහාය නොදක්වයි." : "Voice recognition is not supported in this browser.");
-            return;
-        }
-
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = new SpeechRecognition();
-        recognition.lang = currentLang === 'si' ? 'si-LK' : 'en-US';
-
-        const micBtn = document.getElementById('micBtn');
-        micBtn.style.color = 'var(--danger)';
-
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            document.getElementById('chatInput').value = transcript;
-            micBtn.style.color = '';
-            sendChatMessage();
-        };
-
-        recognition.onerror = () => { micBtn.style.color = ''; };
-        recognition.onend = () => { micBtn.style.color = ''; };
-
-        recognition.start();
-    }
+   
 
     /* ======================================================================
        13. INITIALIZATION ON PAGE LOAD
