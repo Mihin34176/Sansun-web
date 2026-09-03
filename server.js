@@ -20,39 +20,31 @@ You are 'සන්සුන්' (Sansun) AI Assistant, an empathetic, safe, and 
 - Keep responses concise, comforting, and clear.
 `;
 
-// Available Models Route
-app.get('/api/models', async (req, res) => {
-    try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${process.env.GEMINI_API_KEY}`);
-        const data = await response.json();
-        res.json(data);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-
 // Chatbot API Endpoint
 app.post('/api/chat', async (req, res) => {
     try {
-        // Frontend එකෙන් 'message' හෝ 'history' ආවොත් දෙකම Handle කරනවා
         const { message, history } = req.body;
 
-        let lastUserMessage = '';
+        let userText = '';
 
-        if (message) {
-            lastUserMessage = message;
-        } else if (history && Array.isArray(history)) {
-            lastUserMessage = history[history.length - 1]?.parts[0]?.text || '';
-        } else {
-            return res.status(400).json({ error: 'Message field is required' });
+        if (typeof message === 'string' && message.trim() !== '') {
+            userText = message;
+        } else if (Array.isArray(history) && history.length > 0) {
+            userText = history[history.length - 1]?.parts[0]?.text || '';
+        } else if (req.body.prompt) {
+            userText = req.body.prompt;
         }
 
+        if (!userText) {
+            return res.status(400).json({ error: 'Message content is required' });
+        }
+
+        // Correct Gemini model name
         const model = genAI.getGenerativeModel({ 
-            model: "gemini-1.5-flash"
+            model: "gemini-2.5-flash" 
         });
 
-        const prompt = `${SYSTEM_INSTRUCTION}\n\nUser message: ${lastUserMessage}`;
+        const prompt = `${SYSTEM_INSTRUCTION}\n\nUser message: ${userText}`;
 
         const result = await model.generateContent(prompt);
         const reply = result.response.text();
